@@ -15,6 +15,7 @@
  * @return {number}
  */
 var mySqrt = function (x) {
+    if (x < 2) return x;
     let left = 0, right = x;
     while (left <= right) {
         let mid = left + ((right - left) >> 1);
