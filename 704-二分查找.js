@@ -12,7 +12,7 @@ var search = function (nums, target) {
     let left = 0, right = nums.length - 1;
     while (left <= right) {
         // let mid = (left + right) >> 1; 
-        let mid = Math.ceil((left + right) / 2);
+        let mid = Math.floor((left + right) / 2);
         if (nums[mid] < target) {
             left = mid + 1;
         } else if (nums[mid] > target) {
