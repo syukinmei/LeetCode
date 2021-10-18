@@ -15,15 +15,14 @@
 
 
 // 方法二：2次二分搜索分别检索大于等于target的部分 和 小于等于target的部分
-// 
 var searchRange = function (nums, target) {
     let left = 0, right = nums.length - 1, mid, ans = [];
     // 第一次二分搜索大于等于target的部分，即为target的起始位置
     while (left < right) {
         mid = left + ((right - left) >> 1);
-        if (nums[mid] >= target) { // 
+        if (nums[mid] >= target) { // 下轮搜索区间为[left, mid] ,因为存在mid为第一个等于target的情况
             right = mid;
-        } else {
+        } else { // 下轮搜索区间为[mid+1, right]
             left = mid + 1;
         }
     }
@@ -62,3 +61,49 @@ var searchRange = function (nums, target) {
     return ans;
 };
 searchRange([1, 2, 2, 4, 4, 4, 5, 6, 6, 6], 4)
+
+// 时间复杂度：n为数组的长度
+// 空间复杂度：只用到常数个临时变量
+
+
+
+
+
+// 更好理解版
+
+/* var searchRange = function (nums, target) {
+    let left = 0, right = nums.length - 1, mid, ans = [];
+    // 第一次二分搜索大于等于target的部分，即为target的起始位置
+    while (left < right) {
+        mid = left + ((right - left) >> 1);
+        if (nums[mid] > target) { //
+            right = mid - 1;
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else { // nums[mid]==target,mid右边一定不是target第一次出现的位置
+            right = mid;
+        }
+    }
+    // 此时有left = right if该点为target即为第一个target的位置，else数组中无target，返回[-1,-1]
+    if (nums[left] === target) {
+        ans.push(left);
+    } else {
+        return [-1, -1];
+    }
+
+    // 第二次二分搜索小于等于target的部分
+    // 再次二分搜索初始化
+    left = 0, right = nums.length - 1;
+    while (left < right) {
+        mid = left + Math.ceil((right - left) / 2);
+        if (nums[mid] < target) {
+            left = mid + 1;
+        } else if (nums[mid] > target) {
+            right = mid - 1;
+        } else { // nums[mid]==target,mid左边边一定不是target第一次出现的位置
+            left = mid;
+        }
+    }
+    ans.push(right)
+    return ans;
+}; */
