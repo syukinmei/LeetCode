@@ -4,3 +4,31 @@
 // 注意，数组 [a[0], a[1], a[2], ..., a[n-1]] 旋转一次 的结果为数组 [a[n-1], a[0], a[1], a[2], ..., a[n-2]] 。
 
 // 给你一个可能存在 重复 元素值的数组 nums ，它原来是一个升序排列的数组，并按上述情形进行了多次旋转。请你找出并返回数组中的 最小元素 。
+
+// 输入：nums = [1,3,5]
+// 输出：1
+
+// 输入：nums = [2,2,2,0,1]
+// 输出：0
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+
+//  提示：在最小值右侧的元素（不包括最后一个元素本身），它们的值一定都严格小于等于数组最后一个元素；而在最小值左侧的元素，它们的值一定都严格大于等于数组最后一个元素。因此，我们可以根据这一条性质，通过二分查找的方法找出最小值。
+ var findMin = function(nums) {
+    let left = 0, right = nums.length - 1, mid;
+    while (left < right) {
+        mid = left + ((right - left) >> 1);
+        if (nums[mid] < nums[right]) { // 最小值在 [left, mid] mid存在为最小值的可能
+            right = mid;
+        } else if (nums[mid] > nums[right]) { // 最小值在 [mid+1,right]
+            left = mid + 1;
+        } else { // nums[mid] = nums[right] 无法分辨mid在最小值左边还是右边
+            right--;
+        }
+    }
+    // 此时有 left = right 该点即为最小值
+    return nums[left];
+};
