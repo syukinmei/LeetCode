@@ -37,3 +37,7 @@ var search = function (nums, target) {
     }
     return -1;
 };
+
+// 时间复杂度：O(logn)，其中 n 是数组 nums 的长度。在二分查找的过程中，每一步会忽略一半的区间，因此时间复杂度为 O(logn)。
+
+// 空间复杂度：O(1)。
