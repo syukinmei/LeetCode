@@ -59,10 +59,11 @@
 var findMin = function (nums) {
     let left = 0, right = nums.length - 1, mid;
     while (left < right) {
-        if (nums[left] === nums[right] || nums[right] === nums[right - 1]) {
+        if (nums[left] === nums[right] || nums[right] === nums[right - 1]) { // 经过此步处理，最小值右侧一定小于最后一个元素，左侧一定大于最后一个元素
             right--;
             continue;
         }
+        console.log(nums.splice(left, right + 1));
         mid = left + ((right - left) >> 1);
         if (nums[mid] < nums[right]) { // 最小值在 [left, mid] mid存在为最小值的可能
             right = mid;
@@ -76,6 +77,9 @@ var findMin = function (nums) {
 
 
 
-console.log(findMin([3, 3, 3, 3, 3, 1, 3, 3]))
-console.log(findMin([2, 2, 2, 1, 1]))
-console.log(findMin([3, 1, 1]));
+// console.log(findMin([3, 3, 3, 3, 3, 1, 3, 3]));
+// console.log(findMin([2, 2, 2, 1, 1]));
+// console.log(findMin([3, 1, 1]));
+// console.log(findMin([2, 4, 5, 6, 7, 2, 2, 2]));
+
+// console.log(findMin([4, 4, 4, 5, 6, 7, 8, 8, 8, 1, 1, 2, 2, 2, 2, 4, 4, 4]));
