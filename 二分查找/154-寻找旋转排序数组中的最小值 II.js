@@ -17,7 +17,9 @@
  */
 
 //  提示：在最小值右侧的元素（不包括最后一个元素本身），它们的值一定都严格小于等于数组最后一个元素；而在最小值左侧的元素，它们的值一定都严格大于等于数组最后一个元素。因此，我们可以根据这一条性质，通过二分查找的方法找出最小值。
- var findMin = function(nums) {
+
+// 二分查找
+/* var findMin = function (nums) {
     let left = 0, right = nums.length - 1, mid;
     while (left < right) {
         mid = left + ((right - left) >> 1);
@@ -31,4 +33,49 @@
     }
     // 此时有 left = right 该点即为最小值
     return nums[left];
+}; */
+
+// 二分查找优化1
+/* var findMin = function (nums) {
+    let left = 0, right = nums.length - 1, mid;
+    while (left < right) {
+        if (nums[left] === nums[right]) {
+            right--;
+            continue;
+        }
+        mid = left + ((right - left) >> 1);
+        if (nums[mid] <= nums[right]) { // 最小值在 [left, mid] mid存在为最小值的可能
+            right = mid;
+        } else if (nums[mid] > nums[right]) { // 最小值在 [mid+1,right]
+            left = mid + 1;
+        }
+    }
+    // 此时有 left = right 该点即为最小值
+    return nums[left];
+}; */
+
+
+// 二分查找优化2
+var findMin = function (nums) {
+    let left = 0, right = nums.length - 1, mid;
+    while (left < right) {
+        if (nums[left] === nums[right] || nums[right] === nums[right - 1]) {
+            right--;
+            continue;
+        }
+        mid = left + ((right - left) >> 1);
+        if (nums[mid] < nums[right]) { // 最小值在 [left, mid] mid存在为最小值的可能
+            right = mid;
+        } else if (nums[mid] > nums[right]) { // 最小值在 [mid+1,right]
+            left = mid + 1;
+        }
+    }
+    // 此时有 left = right 该点即为最小值
+    return nums[left];
 };
+
+
+
+console.log(findMin([3, 3, 3, 3, 3, 1, 3, 3]))
+console.log(findMin([2, 2, 2, 1, 1]))
+console.log(findMin([3, 1, 1]));
