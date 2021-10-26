@@ -35,6 +35,7 @@
     return nums[left];
 }; */
 
+
 // 二分查找优化1
 /* var findMin = function (nums) {
     let left = 0, right = nums.length - 1, mid;
@@ -59,7 +60,8 @@
 var findMin = function (nums) {
     let left = 0, right = nums.length - 1, mid;
     while (left < right) {
-        if (nums[left] === nums[right] || nums[right] === nums[right - 1]) { // 经过此步处理，最小值右侧一定小于最后一个元素，左侧一定大于最后一个元素
+        // 经过此步处理，[left,right]区间内最小值右侧一定小于最后一个元素，左侧一定大于最后一个元素
+        if (nums[left] === nums[right] || nums[right] === nums[right - 1]) {
             right--;
             continue;
         }
@@ -75,6 +77,9 @@ var findMin = function (nums) {
     return nums[left];
 };
 
+// 时间复杂度：平均时间复杂度为 O(logn)，其中 n 是数组 nums 的长度。如果数组是随机生成的，那么数组中包含相同元素的概率很低，在二分查找的过程中，大部分情况都会忽略一半的区间。而在最坏情况下，如果数组中的元素完全相同，那么 while 循环就需要执行 n 次，每次忽略区间的右端点，时间复杂度为 O(n)。
+
+// 空间复杂度：O(1)。
 
 
 // console.log(findMin([3, 3, 3, 3, 3, 1, 3, 3]));
@@ -83,3 +88,4 @@ var findMin = function (nums) {
 // console.log(findMin([2, 4, 5, 6, 7, 2, 2, 2]));
 
 // console.log(findMin([4, 4, 4, 5, 6, 7, 8, 8, 8, 1, 1, 2, 2, 2, 2, 4, 4, 4]));
+console.log(findMin([4, 4, 5, 5, 6, 6, 6, 7, 0, 0, 1, 2, 2, 4, 4, 4]));
