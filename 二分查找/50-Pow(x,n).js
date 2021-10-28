@@ -17,8 +17,8 @@
  * @return {number}
  */
 
-// 暴力解法
- var myPow = function (x, n) {
+// 方法一：暴力解法
+/* var myPow = function (x, n) {
     //  处理n为负数的情况
     if (n < 0) {
         x = 1 / x;
@@ -29,6 +29,27 @@
         ans *= x;
     }
     return ans;
-};
+}; */
 // 时间复杂度为O(n)
 // 空间复杂度为O(1)
+
+// 方法二：分治
+// 思路：把x的n次方，转变为[x^(n/2)]^2  ->  (x*x)^(n/2)
+// 考虑n为奇数和偶数的情况：[x^(n/2)]^2*x 亦或者 先将n-1操作 x*x^n-1
+// x^n -> x^(n/2) -> x^(n/4) -> ... -> x^1 or x^0
+
+var myPow = function (x, n) {
+    // 递归写法
+    if (n < 0) return 1 / myPow(x, -n);
+    if (n === 0) return 1;
+    if (n % 2) return x * myPow(x, n - 1);
+    return myPow(x * x, n / 2);
+
+    // 非递归写法
+}
+
+
+// 时间复杂度：O(logN)。N为n，需要计算x的n，n/2，n/4，。。。，1次
+// 空间复杂度：O(1)
+
+// (x*x)^n/2
