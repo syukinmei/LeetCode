@@ -41,7 +41,7 @@
 var myPow = function (x, n) {
     // 递归写法
     // if (n < 0) return 1 / myPow(x, -n);
-    // if (n === 0) return 1;
+    // if (n === 0) return 1; // 设置递归的出口
     // if (n % 2) return x * myPow(x, n - 1);
     // return myPow(x * x, n / 2);
 
@@ -50,15 +50,15 @@ var myPow = function (x, n) {
         x = 1 / x;
         n = -n;
     }
-    if (n === 0) return 1; // 设置递归的出口
+    if (n === 0) return 1;
     let res = 1;
     while (n > 1) {
         if (n & 1) { // 按位与 等价n % 2 === 1
             n--;
             res *= x; // 将x^n 转变为 x*x^(n-1)
         }
-        x *= x; // 4, 16  16*16
-        n / 2;
+        x *= x;
+        n = n / 2;
     }
     return res * x;
 }
