@@ -43,3 +43,25 @@ var nextGreaterElement = function (nums1, nums2) {
 };
 // 时间复杂度：O(mn)，其中m是nums1的长度，n是nums2的长度
 // 空间复杂度：O(1);
+
+
+// 方法二：单调栈 + 哈希表
+var nextGreaterElement = function (nums1, nums2) {
+    const dic = new Map();
+    const stack = [];
+    // 逆向遍历nums2
+    for (let i = nums2.length - 1; i >= 0; i--) {
+        while (stack.length && nums2[i] > stack[stack.length - 1]) {
+            // 单调栈有值 且 nums2当前元素大于单调栈栈顶的元素 则 出栈
+            stack.pop();
+        }
+        // 此时有栈顶元素即位当前元素的下一个更大元素 用dic保存
+        dic.set(nums2[i], stack.length ? stack[stack.length - 1] : -1)
+        // 当前元素入栈
+        stack.push(nums2[i]);
+    }
+    const res = new Array(nums1.length).fill(0).map((_, i) => dic.get(nums1[i]))
+    return res;
+};
+// 时间复杂度：O(m+n)，其中m为nums1的长度，n为nums2的长度。我们需要遍历nums2以计算nums2中每一个元素右边的第一个更大值，需要遍历nusm1以生成查询结果。
+// 空间复杂度：O(n)，用于存储哈希表
