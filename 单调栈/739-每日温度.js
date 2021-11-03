@@ -14,16 +14,35 @@
  * @param {number[]} temperatures
  * @return {number[]}
  */
+
+// 方法一：暴力解法
+// var dailyTemperatures = function (temperatures) {
+//     let ans = new Array(temperatures.length).fill(0);
+//     for (let i = 0; i < temperatures.length; i++) {
+//         for (let j = i + 1; j < temperatures.length; j++) {
+//             if (temperatures[i] < temperatures[j]) {
+//                 ans[i] = j - i;
+//                 break;
+//             }
+//         }
+//     }
+// }
+// 时间复杂度：O(n^2)
+// 空间复杂度：O(1)
+
 // 方法二：单调栈
- var dailyTemperatures = function (temperatures) {
-    const stack = []; // 递减
+var dailyTemperatures = function (temperatures) {
+    const stack = []; // 单调递减，存储温度列表的下标
     const res = new Array(temperatures.length).fill(0);
     for (let i = 0; i < temperatures.length; i++) {
         // 单调栈中有值 且 栈顶下标对应的元素 小于 当前元素 -> 出栈
         while (stack.length && temperatures[stack[stack.length - 1]] < temperatures[i]) {
-            res[stack.pop()] = i - temp;
+            let previousIndex = stack.pop();
+            res[previousIndex] = i - previousIndex;
         }
         stack.push(i);
     }
     return res;
 };
+// 时间复杂度：O(n)，其中n是温度列表的长度。正向遍历温度列表一遍，对于温度列表中的每个下标最多只进行一次进栈和出栈的操作。
+// 空间复杂度：O(n)，其中n是温度列表的长度。需要维护一个单调栈存储温度列表中的下标。
