@@ -30,10 +30,11 @@
 // 时间复杂度：O(n^2)
 // 空间复杂度：O(1)
 
+
 // 方法二：单调栈
 var dailyTemperatures = function (temperatures) {
-    const stack = []; // 单调递减，存储温度列表的下标
     const res = new Array(temperatures.length).fill(0);
+    const stack = []; // 单调递减，存储温度列表的下标
     for (let i = 0; i < temperatures.length; i++) {
         // 单调栈中有值 且 栈顶下标对应的元素 小于 当前元素 -> 出栈
         while (stack.length && temperatures[stack[stack.length - 1]] < temperatures[i]) {
@@ -45,4 +46,25 @@ var dailyTemperatures = function (temperatures) {
     return res;
 };
 // 时间复杂度：O(n)，其中n是温度列表的长度。正向遍历温度列表一遍，对于温度列表中的每个下标最多只进行一次进栈和出栈的操作。
+// 空间复杂度：O(n)，其中n是温度列表的长度。需要维护一个单调栈存储温度列表中的下标。
+
+
+var dailyTemperatures = function (temperatures) {
+    // 维护一个单调递减的栈，栈顶就是当前项右边第一个大元素
+    const res = new Array(temperatures.length).fill(0);
+    const stack = []; // 单调递减 存储温度列表的下标
+    // 逆向遍历
+    for (i = temperatures.length - 1; i >= 0; i--) {
+        // 如果单调栈中有值 且 栈顶元素 小于等于 当前项 -> 弹栈
+        while (stack.length && temperatures[stack[stack.length - 1]] <= temperatures[i]) {
+            stack.pop();
+        }
+        // 此时有栈顶下标对应的元素即为当前项下一个更大值
+        res[i] = stack.length ? stack[stack.length - 1] - i : 0;
+        // 压栈
+        stack.push(i);
+    }
+    return res;
+}
+// 时间复杂度：O(n)线性时间的复杂度,其中n是温度列表的长度，对于温度列表中的每个下标最多只进行一次进栈和出栈的操作。
 // 空间复杂度：O(n)，其中n是温度列表的长度。需要维护一个单调栈存储温度列表中的下标。
