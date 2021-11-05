@@ -86,7 +86,7 @@ var nextGreaterElement = function (nums1, nums2) {
         while (stack.length && nums2[i] > stack[stack.length - 1]) {
             stack.pop();
         }
-        // 此时栈顶元素及时当前元素下一个更大元素，前提是栈中有值。用哈希表保存
+        // 此时栈顶元素即是当前元素下一个更大元素，前提是栈中有值。用哈希表保存
         dic.set(nums2[i], stack[stack.length - 1] || -1);
         // 压栈
         stack.push(nums2[i]);
