@@ -34,9 +34,9 @@
 // 方法二：单调栈（正向遍历）
 var dailyTemperatures = function (temperatures) {
     const res = new Array(temperatures.length).fill(0);
-    const stack = []; // 单调递减，存储温度列表的下标
+    const stack = []; // 单调递减，存储温度列表的下标，保证栈中元素未找到下一个更大元素
     for (let i = 0; i < temperatures.length; i++) {
-        // 单调栈中有值 且 栈顶下标对应的元素 小于 当前元素 -> 出栈
+        // 单调栈中有值 且 栈顶下标对应的元素 小于 当前元素 ，说明栈中部分元素下一个更大元素以及找到-> 出栈
         while (stack.length && temperatures[stack[stack.length - 1]] < temperatures[i]) {
             let previousIndex = stack.pop();
             res[previousIndex] = i - previousIndex;
@@ -52,7 +52,7 @@ var dailyTemperatures = function (temperatures) {
 var dailyTemperatures = function (temperatures) {
     // 维护一个单调递减的栈，栈顶就是当前项右边第一个大元素
     const res = new Array(temperatures.length);
-    const stack = []; // 单调递减 存储温度列表的下标
+    const stack = []; // 单调递减 存储温度列表的下标 保证栈顶元素即使当前元素下一个更大元素
     // 逆向遍历
     for (i = temperatures.length - 1; i >= 0; i--) {
         // 如果单调栈中有值 且 栈顶元素 小于等于 当前项 -> 弹栈
