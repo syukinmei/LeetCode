@@ -9,7 +9,7 @@
 
 // 输入：arr = [11,81,94,43,3]
 // 输出：444
-[0,4,2,3,1,2,6,3]
+[0, 4, 2, 3, 1, 2, 6, 3]
 
 // 贡献值？？？
 /* 
@@ -34,7 +34,7 @@ contribution = value * amount
 
 // 方法二：暴力解法：循环找每个元素贡献值
 // leetcode超时。。。很暴力
- var sumSubarrayMins = function (arr) {
+var sumSubarrayMins = function (arr) {
     let sum = 0; // 存放结果值
     for (let i = 0; i < arr.length; i++) {
         let left = i, right = i; // 寻找左右扩张边界的下标
@@ -46,3 +46,37 @@ contribution = value * amount
 };
 // 时间复杂素：O(n^2)
 // 空间复杂度：O(1)
+
+
+// 方法三：单调栈
+
+var sumSubarrayMins = function (arr) {
+    const mod = 1e9 + 7;
+    const stack = [];
+    let prev = [];
+    let next = [];
+    // 寻找左扩张边界（寻找左边第一个小）
+    for (let i = 0; i < arr.length; i++) {
+        // 栈中有值 且 栈顶下标对应的元素 大于等于 当前元素
+        // temp:寻找右边第一个小的元素
+        while (stack.length && arr[stack[stack.length - 1]] >= arr[i]) {
+            stack.pop();
+        }
+        prev[i] = stack.length ? stack[stack.length - 1] : -1;
+        stack.push(i);
+    }
+    let temp = stack.map(_ => arr[_]);
+    console.log('prev', prev, 'stack', stack, 'temp', temp);
+
+    // todo2
+    stack = [];
+    // 寻找右扩张边界（寻找右边第一个小）
+    for (let i = arr.length - 1; i >= 0; i--) {
+        while (stack.length && arr[stack[stack.length - 1]] > arr[i]) {
+            stack.pop();
+        }
+    }
+}
+
+console.log(sumSubarrayMins([3, 1, 2, 4]));
+// 17
