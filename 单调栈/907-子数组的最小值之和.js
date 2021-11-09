@@ -41,7 +41,7 @@ var sumSubarrayMins = function (arr) {
             res += min_;
         }
     }
-    return res % (1000000000 + 7);
+    return res % (1e9 + 7);
 };
 // 时间复杂度：O(n^2)
 // 空间复杂度：O(1);
@@ -57,7 +57,7 @@ var sumSubarrayMins = function (arr) {
         while (right < arr.length && arr[right + 1] >= arr[i]) right++;
         sum += arr[i] * (i - left + 1) * (right - i + 1);
     }
-    return sum;
+    return sum % (1e9 + 7);
 };
 // 时间复杂素：O(n^2)
 // 空间复杂度：O(1)
@@ -66,41 +66,13 @@ var sumSubarrayMins = function (arr) {
 // 方法四：单调栈
 
 var sumSubarrayMins = function (arr) {
-    const stack = [];
-    let left = [];
-    let right = [];
-    // todo1 - 寻找左扩张边界（寻找左边第一个小）
-    for (let i = 0; i < arr.length; i++) {
-        // 栈中有值 且 栈顶下标对应的元素 大于等于 当前元素
-        // temp:寻找右边第一个小的元素
-        while (stack.length && arr[stack[stack.length - 1]] >= arr[i]) {
-            stack.pop();
-        }
-        left[i] = stack.length ? stack[stack.length - 1] : -1;
-        stack.push(i);
+    const stack = []; // 单调递增栈
+    const expandLeft = []; // 每个元素的左扩张边界
+    const expandRight = []; // 每个元素的右扩张边界
+    // todo1 寻找左边扩张边界（寻找左边第一个小）
+    for (let i = 0;i<arr.length;i++) {
+        
     }
-    let temp = stack.map(_ => arr[_]);
-    console.log('left', left, 'stack', stack, 'temp', temp);
-
-    // todo2 - 寻找右扩张边界（寻找右边第一个小）
-    stack.length = 0
-    for (let i = arr.length - 1; i >= 0; i--) {
-        while (stack.length && arr[stack[stack.length - 1]] > arr[i]) {
-            stack.pop();
-        }
-        right[i] = stack.length ? stack[stack.length - 1] : arr.length;
-        stack.push(i);
-    }
-    temp = stack.map(_ => arr[_]);
-    console.log('right', right, 'stack', stack, 'temp', temp);
-
-    // todo3 - 处理结果
-    let sum = 0;
-    for (let i = 0; i < arr.length; i++) {
-        sum += (i - left[i]) * (right[i] - i) * arr[i];
-        sum %= 1e9 + 7;
-    }
-    return sum;
 }
 console.log(sumSubarrayMins([3, 1, 2, 4]));
 
