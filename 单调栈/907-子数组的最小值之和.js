@@ -113,7 +113,7 @@ var sumSubarrayMins = function (arr) {
     return sum %= 1e9 + 7;
 }
 
-// 自己写的
+// 改版
 var sumSubarrayMins = function (arr) {
     const stack = []; // 单调栈
     const DP = new Array(arr.length).fill(0);
