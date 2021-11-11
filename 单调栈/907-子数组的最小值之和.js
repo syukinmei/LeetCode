@@ -63,18 +63,72 @@ var sumSubarrayMins = function (arr) {
 // 空间复杂度：O(1)
 
 
-// 方法四：单调栈
+// 方法四：单调栈 + 贡献值
 
 var sumSubarrayMins = function (arr) {
     const stack = []; // 单调递增栈
     const expandLeft = []; // 每个元素的左扩张边界
     const expandRight = []; // 每个元素的右扩张边界
-    // todo1 寻找左边扩张边界（寻找左边第一个小）
-    for (let i = 0;i<arr.length;i++) {
-        
+    // step1 寻找左边扩张边界（寻找左边第一个小）
+    for (let i = 0; i < arr.length; i++) {
+        while (stack.length && arr[i] <= arr[stack[stack.length - 1]]) stack.pop();
+        // 此时有栈顶元素即是当前元素左边第一个更小元素
+        expandLeft[i] = stack.length ? stack[stack.length - 1] : -1;
+        stack.push(i);
     }
+    // step2 - 寻找右扩张边界（寻找右边第一个小）
+    stack.length = 0; // stack初始化
+    for (let i = arr.length - 1; i >= 0; i--) {
+        // 此处选择 < 而不是 <= ，避免重复区间
+        while (stack.length && arr[i] < arr[stack[stack.length - 1]]) stack.pop();
+        // 此时有栈顶元素即使当前元素右边第一个更小元素
+        expandRight[i] = stack.length ? stack[stack.length - 1] : arr.length;
+        stack.push(i);
+    }
+    // step3 - 套用贡献值公式计算结果
+    let sum = 0;
+    for (let i = 0; i < arr.length; i++) {
+        sum += arr[i] * (i - expandLeft[i]) * (expandRight[i] - i);
+    }
+    return sum %= 1e9 + 7;
 }
-console.log(sumSubarrayMins([3, 1, 2, 4]));
 
 // 时间复杂度：O(N)，其中 N 是 arr 的长度。
 // 空间复杂度：O(N)。
+
+
+// 方法五：单调栈 + DP动态规划
+var sumSubarrayMins = function (arr) {
+    const stack = []; // 单调栈
+    stack.push(-1);
+    const DP = new Array(arr.length + 1).fill(0);
+    let sum = 0;
+    for (let i = 0; i < arr.length; i++) {
+        while (stack[stack.length - 1] !== -1 && arr[i] <= arr[stack[stack.length - 1]]) stack.pop();
+        // 此时有栈顶元素即是当前元素左边第一个更小元素
+        DP[i + 1] = DP[stack[stack.length - 1] + 1] + (i - stack[stack.length - 1]) * arr[i];
+        stack.push(i);
+        sum += DP[i + 1];
+    }
+    return sum %= 1e9 + 7;
+}
+
+// 自己写的
+var sumSubarrayMins = function (arr) {
+    const stack = []; // 单调栈
+    const DP = new Array(arr.length).fill(0);
+    let sum = 0;
+    for (let i = 0; i < arr.length; i++) {
+        while (stack.length && arr[i] <= arr[stack[stack.length - 1]]) stack.pop();
+        // 此时有栈顶元素即是当前元素左边第一个更小元素
+        if (stack.length) {
+            DP[i] = DP[stack[stack.length - 1]] + (i - stack[stack.length - 1]) * arr[i];
+        } else {
+            DP[i] = (i + 1) * arr[i];
+        }
+        stack.push(i);
+        sum += DP[i];
+    }
+    return sum %= 1e9 + 7;
+}
+console.log(sumSubarrayMins([3, 1, 2, 4, 2]));
