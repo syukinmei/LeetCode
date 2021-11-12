@@ -53,14 +53,14 @@ var sumSubarrayMins = function (arr) {
     let sum = 0; // 存放结果值
     for (let i = 0; i < arr.length; i++) {
         let left = i, right = i; // 寻找左右扩张边界的下标
-        while (left >= 0 && arr[left - 1] > arr[i]) left--;
-        while (right < arr.length && arr[right + 1] >= arr[i]) right++;
+        while (left > 0 && arr[left - 1] > arr[i]) left--;
+        while (right < arr.length - 1 && arr[right + 1] >= arr[i]) right++;
         sum += arr[i] * (i - left + 1) * (right - i + 1);
     }
     return sum % (1e9 + 7);
 };
-// 时间复杂素：O(n^2)
-// 空间复杂度：O(1)
+// 时间复杂素：O(n^2)，n为数组 arr 的长度，需要遍历一次数组，在每一个位置向两边扩散，每一次扩散最坏情况需要看完整个数组
+// 空间复杂度：O(1)，使用常数个临时变量。
 
 
 // 方法四：单调栈 + 贡献值
