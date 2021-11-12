@@ -48,7 +48,6 @@ var sumSubarrayMins = function (arr) {
 
 
 // 方法三：暴力解法：循环找每个元素贡献值
-// leetcode超时。。。很暴力
 var sumSubarrayMins = function (arr) {
     let sum = 0; // 存放结果值
     for (let i = 0; i < arr.length; i++) {
