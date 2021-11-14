@@ -40,71 +40,54 @@ var largestRectangleArea = function (heights) {
 // 空间复杂度：O(1)，使用常数个临时变量。
 
 
-// 方法二：单调栈
-// 维护一个单调递增栈，当遇到 小于等于 栈顶元素时，进行弹栈，此时有 当高度为弹栈元素时 当前元素即使右扩展边界 栈顶元素为左扩展边界
-// 即 弹栈元素为高计算举行面积 高为：弹栈元素，底为：当前元素下标 - 弹栈元素下标
+// 方法二：单调栈 + 哨兵技巧（处理实参）
+// 末尾添加一个元素，代表高度为0，避免栈中还有值时错过最大面积（处理全部单调递增 或 栈中有值的情况）
+// 维护一个单调递增栈，当遇到 小于(小于等于也行) 栈顶元素时，进行弹栈，此时有 当高度为弹栈元素时 当前元素即使右扩展边界 栈顶元素为左扩展边界
+// 即 弹栈元素为高计算举行面积 高为：弹栈元素，底为：当前元素下标 - 栈顶元素下标(栈中无元素即为-1) - 1
 var largestRectangleArea = function (heights) {
+    heights.push(0); // 避免栈中还有值时错过最大面积（处理全部单调递增 或 栈中有值的情况）
     const stack = []; // 单调递增栈
     let Square = 0; // 存储面积
-    let newHeights = [0, ...heights, 0];
     for (let i = 0; i < heights.length; i++) {
-        // 栈中有值 且 当前元素 小于等于 栈顶元素时
-        while (stack.length && heights[i] <= heights[stack[stack.length - 1]]) {
-            let curIndex = stack.pop();
-            let curSquare = heights[curIndex] * (i - curIndex);
-            Square = Math.max(Square, curSquare);
-        }
-        // 压栈
-        stack.push(i);
-    }
-    // 处理全部单调递增情况 以及 栈中有值的情况
-    if (heights[stack[0]] === heights[stack[stack.length - 1]]) {
-        Square = Math.max(Square, heights[stack[0]] * stack.length)
-    }
-    console.log('stack', stack, 'Square', Square);
-    while (stack.length) {
-        let curIndex = stack.pop();
-        let curWidth = stack.length ? curIndex - stack[stack.length - 1] : 1
-        Square = Math.max(Square, curWidth * heights[curIndex]);
-    }
-    return Square;
-}
-
-// 对heights数组特殊处理
-var largestRectangleArea = function (heights) {
-    const stack = []; // 单调递增栈
-    let Square = 0; // 存储面积
-    let newHeights = [0, ...heights, 0];
-    for (let i = 0; i < newHeights.length; i++) {
-        // 栈中有值 且 当前元素 小于等于 栈顶元素时
-        while (stack.length && newHeights[i] < newHeights[stack[stack.length - 1]]) {
-            let curIndex = stack.pop();
-            let curSquare = newHeights[curIndex] * (i - stack[stack.length - 1] - 1);
-            Square = Math.max(Square, curSquare);
-        }
-        // 压栈
-        stack.push(i);
-    }
-    return Square;
-}
-
-
-var largestRectangleArea = function (heights) {
-    heights = [...heights, 0];
-    const stack = [];
-    let Square = 0;
-    for (let i = 0; i < heights.length; i++) {
-        while (stack.length && heights[i] <= heights[stack[stack.length - 1]]) {
+        // 栈中有值 且 当前元素 小于(小于等于也行) 栈顶元素时有 当高度为弹栈元素 当前元素即使右扩展边界 栈顶元素为左扩展边界
+        while (stack.length && heights[i] < heights[stack[stack.length - 1]]) {
             let middle = stack.pop();
-            // 如果栈中无值 则left为-1 否则为栈顶下标
+            // 如果栈中无值 则left为-1 有值为栈顶下标
             let left = stack.length ? stack[stack.length - 1] : -1
             let curSquare = heights[middle] * (i - left - 1);
             Square = Math.max(Square, curSquare);
         }
+        // 压栈
         stack.push(i);
     }
     return Square;
 }
+// 时间复杂度：O(n)，n为数组 heights 的长度
+// 空间复杂度：O(n)，n为使用栈的最大保存容量，最多为数组 heights 的长度
+
+// 单调栈 + 哨兵技巧
+// 使用 「哨兵」 (Sentinel)，避免特殊情况的讨论
+// 哨兵1 （第一个0）解决栈为非空的判断
+// 哨兵2 （最后一个0）解决栈中所有元素都单调递增的情况
+var largestRectangleArea = function (heights) {
+    const stack = []; // 单调递增栈
+    let Square = 0; // 存储面积
+    let newHeights = [0, ...heights, 0]; // 添加两个哨兵
+    for (let i = 0; i < newHeights.length; i++) {
+        // 栈中有值 且 当前元素 小于等于 栈顶元素时有 当高度为弹栈元素 当前元素即使右扩展边界 栈顶元素为左扩展边界
+        while (stack.length && newHeights[i] < newHeights[stack[stack.length - 1]]) {
+            let middle = stack.pop();
+            let curSquare = newHeights[middle] * (i - stack[stack.length - 1] - 1);
+            Square = Math.max(Square, curSquare);
+        }
+        // 压栈
+        stack.push(i);
+    }
+    return Square;
+}
+// 时间复杂度：O(n)，n为数组 heights 的长度，每一个元素入栈一次，出栈一次
+// 空间复杂度：O(n)，n为使用栈的最大保存容量，最多为数组 heights 的长度
+
 console.log(largestRectangleArea([2, 1, 5, 6, 2, 3]))
 console.log(largestRectangleArea([2, 4]))
 console.log(largestRectangleArea([1, 1]))
