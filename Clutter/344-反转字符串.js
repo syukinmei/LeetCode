@@ -50,13 +50,12 @@ var reverseString = function (s) {
         // s[right] = s[left].left;
         // s[left] = s[left].right;
 
-        // 八、 利用运算符优先级，
+        // 八、 利用运算符优先级，有点诡异
         // 首先执行 s[right] = s[left] ，此时的s[right] 直接得到了 s[left] 的值，然后数组索引让 s[left] 得到 s[right]的值。
         // s[left] = [s[right], s[right] = s[left]][0];
 
         left++;
         right--;
-
     }
 };
 // 时间复杂度：O(n)，n为字符串数组s的长度。一共执行了n/2次的交换。
