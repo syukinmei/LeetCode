@@ -24,6 +24,36 @@
  * @param {string} goal
  * @return {boolean}
  */
- var buddyStrings = function(s, goal) {
+// 方法一：模拟
+var buddyStrings = function (s, goal) {
+    // 1、长度不想等必定不是亲密字符串
+    if (s.length !== goal.length) return false;
 
+    // 2、字符串相同 如果有重复元素返回true('aab') 无重复元素返回false('ab')
+    if (s === goal) {
+        const sArr = s.split('');
+        // [...new Set(sArr)].length === s.length
+        if (Array.from(new Set(sArr)).length === s.length) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // 3、字符串不同 遍历字符串 3处不同返回false 2处不同 且 不同的位置交换后对应的元素相等返回true
+    let [left, right] = [-1, -1]; // 记录两处不同的位置
+    for (let i = 0; i < s.length; i++) {
+        if (s.charAt(i) !== goal.charAt(i)) {
+            if (left === -1) {
+                left = i;
+            } else if (right === -1) {
+                right = i;
+            } else {
+                // 发现第三处不同 直接返回false
+                return false;
+            }
+        }
+    }
+    // 2处不同 且 不同的位置交换后对应的元素相等
+    return s.charAt(left)===goal.charAt(right)&&s.charAt(right)===goal.charAt(left);
 };
