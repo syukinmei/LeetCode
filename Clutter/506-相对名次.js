@@ -19,5 +19,27 @@
  * @return {string[]}
  */
 var findRelativeRanks = function (score) {
-
+    // 声明一个数组长度为score的长度并用固定值0填充，再映射该数组，每一项变为长度为2的值为0的数组 [[0, 0], [0, 0]]
+    const arr = new Array(score.length).fill(0).map(() => new Array(2).fill(0));
+    let desc = ["Gold Medal", "Silver Medal", "Bronze Medal"]; // 辅助数组
+    for (let i = 0; i < arr.length; i++) {
+        arr[i][0] = score[i];
+        arr[i][1] = i;
+        // arr[i] = [score[i], i];
+    }
+    // 此时有二维数组，数组[0]为得分，数组[1]为下标. [ [ 10, 0 ], [ 3, 1 ], [ 8, 2 ], [ 9, 3 ], [ 4, 4 ] ]
+    // 按照得分降序排序
+    arr.sort((a, b) => b[0] - a[0]);
+    // 此时数组为名次降序 赋值ans数组
+    const ans = new Array(score.length).fill(0);
+    for (let i = 0; i < score.length; i++) {
+        if (i >= 3) { // 赋值排名
+            ans[arr[i][1]] = i + 1 + '';
+        } else { // 赋值奖章
+            ans[arr[i][1]] = desc[i];
+        }
+    }
+    return ans;
 };
+// 时间复杂度：O(n log n)，n为数组 score 的长度。我们需要对数组进行一次排序，因此时间复杂度为O(n log n)
+// 空间复杂度：O(n)，n为数组 score 的长度
