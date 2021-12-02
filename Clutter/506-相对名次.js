@@ -18,6 +18,7 @@
  * @param {number[]} score
  * @return {string[]}
  */
+// 方法一：二维数组记录 得分 和 下标，后对二维数组进行排序 赋值ans数组
 var findRelativeRanks = function (score) {
     // 声明一个数组长度为score的长度并用固定值0填充，再映射该数组，每一项变为长度为2的值为0的数组 [[0, 0], [0, 0]]
     const arr = new Array(score.length).fill(0).map(() => new Array(2).fill(0));
@@ -41,5 +42,22 @@ var findRelativeRanks = function (score) {
     }
     return ans;
 };
-// 时间复杂度：O(n log n)，n为数组 score 的长度。我们需要对数组进行一次排序，因此时间复杂度为O(n log n)
-// 空间复杂度：O(n)，n为数组 score 的长度
+// 时间复杂度：O(n log n)，n为数组 score 的长度。拷贝 score 数组形成 arr新数组的复杂度为O(n)，对拷贝数组进行排序的复杂度为O(n log n)，构造答案数组复杂度为O(n)，整体时间复杂度为O(n log n)。
+// 空间复杂度：O(n)，n为数组 score 的长度。
+
+
+// 方法二：哈希表记录下表
+// 哈希表记录原来的分值对应的坐标，这样排序后我们就知道每个原来的坐标排多少名了。
+var findRelativeRanks = function (score) {
+    let desc = ["Gold Medal", "Silver Medal", "Bronze Medal"]; // 辅助数组
+    // 创建字典 key为分数 value为下标
+    const map = new Map(), ans = new Array(score.length);
+    for (let i = 0; i < score.length; i++)
+        map.set(score[i], i);
+    // 按照得分降序排序
+    score = score.sort((a, b) => b - a);
+    for (let i = 0; i < score.length; i++)
+        ans[map.get(score[i])] = i <= 2 ? desc[i] : (i + 1) + "";
+    return ans;
+};
+// 复杂度与方法一相同
