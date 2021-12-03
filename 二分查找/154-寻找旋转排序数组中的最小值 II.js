@@ -47,7 +47,7 @@
         mid = left + ((right - left) >> 1);
         if (nums[mid] <= nums[right]) { // 最小值在 [left, mid] mid存在为最小值的可能
             right = mid;
-        } else if (nums[mid] > nums[right]) { // 最小值在 [mid+1,right]
+        } else if (nums[mid] > nums[right]) { // 最小值在 [mid+1,right]
             left = mid + 1;
         }
     }
@@ -69,7 +69,7 @@ var findMin = function (nums) {
         mid = left + ((right - left) >> 1);
         if (nums[mid] < nums[right]) { // 最小值在 [left, mid] mid存在为最小值的可能
             right = mid;
-        } else if (nums[mid] > nums[right]) { // 最小值在 [mid+1,right]
+        } else if (nums[mid] > nums[right]) { // 最小值在 [mid+1,right]
             left = mid + 1;
         }
     }
