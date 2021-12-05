@@ -32,12 +32,17 @@ var truncateSentence = function (s, k) {
 };
 
 // 方法二：遍历
+// 由题意可知，除了最后一个单词，每个单词后面都跟随着一个空格。因此我们可以通过判断当前元素是否为空格或句子结尾来统计单词数count
+// 当count = k，将当前下标记录到end，返回句子s到end处截断的句子。
 var truncateSentence = function (s, k) {
-    let end = 0;
-    for (let i = 0; i <= s.length && k > 0; i++) {
+    let end = 0, count = 0;
+    for (let i = 0; i <= s.length; i++) {
         if (s.charAt(i) === ' ' || i === s.length) {
-            k--;
-            end = i;
+            count++;
+            if (count === k) {
+                end = i;
+                break;
+            }
         }
     }
     return s.slice(0, end);
