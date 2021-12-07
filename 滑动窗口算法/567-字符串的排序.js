@@ -20,15 +20,19 @@ var checkInclusion = function (s1, s2) {
     for (let i = 0; i < s1.length; i++) {
         targetArr[s1.charCodeAt(i) - 'a'.charCodeAt()]++;
     }
-    // 遍历s2
+    // 遍历s2，在字符串内部使用滑动窗口逐一访问判断
     for (let i = 0; i < s2.length; i++) {
         // 建立滑动窗口的计数数组，滑动窗口数组的长度与目标数组长度相同
         windowArr[s2.charCodeAt(i) - 'a'.charCodeAt()]++;
+        // 滑动窗口创建完成之前不进行任何操作，长度不同不可能与目标数组相符
         if (i >= s1.length - 1) {
+            // 滑动窗口创建完毕之后即刻开始与目标窗口进行比对，比对一致即返回true
             if (equal(windowArr, targetArr)) return true;
+            // 比对不一致，则滑动窗口向右滑动，最左边字符退出窗口，进入下一次循坏，在下一次循环中又会将窗口外右边的第一个字符放入窗口
             else windowArr[s2.charCodeAt(i - s1.length + 1) - 'a'.charCodeAt()]--;
         }
     }
+    // 比对完成都没有发现匹配数据，则说明无匹配数据，返回false
     return false;
 };
 
