@@ -27,6 +27,8 @@ var checkInclusion = function (s1, s2) {
         // 滑动窗口创建完成之前不进行任何操作，长度不同不可能与目标数组相符
         if (i >= s1.length - 1) {
             // 滑动窗口创建完毕之后即刻开始与目标窗口进行比对，比对一致即返回true
+            // 用toSting()
+            // if (windowArr.toString()===targetArr.toString()) return true;
             if (equal(windowArr, targetArr)) return true;
             // 比对不一致，则滑动窗口向右滑动，最左边字符退出窗口，进入下一次循坏，在下一次循环中又会将窗口外右边的第一个字符放入窗口
             else windowArr[s2.charCodeAt(i - s1.length + 1) - 'a'.charCodeAt()]--;
@@ -47,3 +49,26 @@ function equal(a, b) {
         if (a[i] !== b[i]) return false;
     return true;
 }
+
+
+// 用toSting比较数组
+var checkInclusion = function (s1, s2) {
+    // 特殊处理
+    if (s1.length > s2.length) return false;
+    const cnt1 = new Array(26).fill(0),
+        cnt2 = new Array(26).fill(0);
+    // 建立计数数组
+    for (let i = 0; i < s1.length; i++) {
+        cnt1[s1.charCodeAt(i) - 'a'.charCodeAt()]++;
+        cnt2[s2.charCodeAt(i) - 'a'.charCodeAt()]++;
+    }
+    if (cnt1.toString() === cnt2.toString()) return true;
+    for (let i = s1.length; i < s2.length; i++) {
+        // 滑动窗口
+        cnt2[s2.charCodeAt(i - s1.length) - 'a'.charCodeAt()]--;
+        cnt2[s2.charCodeAt(i) - 'a'.charCodeAt()]++;
+        // 对比
+        if (cnt1.toString() === cnt2.toString()) return true;
+    }
+    return false;
+};
