@@ -32,4 +32,42 @@
 // 输入：licensePlate = "iMSlpe4", words = ["claim","consumer","student","camera","public","never","wonder","simple","thought","use"]
 // 输出："simple"
 
- 
+
+
+/**
+ * @param {string} licensePlate
+ * @param {string[]} words
+ * @return {string}
+ */
+// 方法一：正则过滤 + 字符串按字典序排序后比较相同字符数
+var shortestCompletingWord = function (licensePlate, words) {
+    // 处理字符串 licensePlate，使用正则将非字母删除，字母转小写，字符串转数组，按照字典序排序
+    licensePlate = licensePlate.replace(/[^a-zA-Z]/g, '').toLowerCase().split('').sort();
+    let res = '';
+    for (const w of words) {
+        const word = w.split('').sort(); // words中每一项单词都按字典序排序
+        if (word.length < licensePlate.length) continue; // 长度小于licensePlate一定不是补全词 跳过单次循环
+        let count = 0; // 记录单词匹配次数
+        for (let i = 0, j = 0; i < licensePlate.length && j < word.length;) {
+            if (licensePlate[i] === word[j]) {
+                // 相等两个指针都右移
+                i++; j++; count++;
+            } else if (licensePlate[i] > word[j]) {
+                // word[j]小，j指针右移，尝试寻找和licensePlate[i]相等的元素
+                j++;
+            } else if (licensePlate[i] < word[j]) {
+                // licensePlate中存在word中没有的字母 word一定不是补全词 跳过本次循环
+                break;
+            }
+        }
+        // 判断是否是补全词，单词匹配次数 = licensePlate的长度 为补全词
+        if (count === licensePlate.length) {
+            if (res == '' || res.length > w.length) {
+                res = w;
+            }
+        }
+    }
+    return res;
+};
+
+console.log(shortestCompletingWord('abf', ['fa', 'fed', 'anrf', 'afeb', 'abfc']));
