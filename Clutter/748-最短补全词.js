@@ -56,7 +56,7 @@ var shortestCompletingWord = function (licensePlate, words) {
                 // word[j]小，j指针右移，尝试寻找和licensePlate[i]相等的元素
                 j++;
             } else if (licensePlate[i] < word[j]) {
-                // licensePlate中存在word中没有的字母 word一定不是补全词 跳过本次循环
+                // licensePlate[i]小，licensePlate中存在word中没有的字母 word一定不是补全词 跳过本次循环
                 break;
             }
         }
@@ -69,5 +69,77 @@ var shortestCompletingWord = function (licensePlate, words) {
     }
     return res;
 };
+
+
+
+// 方法二：计数数组
+var shortestCompletingWord = function (licensePlate, words) {
+    // 处理字符串，字母转小写
+    licensePlate = licensePlate.toLowerCase();
+    // 结果值
+    let res = '';
+    // 建立计数数组
+    const cnt = new Array(26).fill(0);
+    for (let i = 0; i < licensePlate.length; i++) {
+        if (licensePlate[i] > 'z' || licensePlate[i] < 'a') continue; // 非字母，跳过循环不录入计数数组中
+        cnt[licensePlate[i].charCodeAt() - 'a'.charCodeAt()]++;
+    }
+    for (const w of words) {
+        // java中的clone()拷贝
+        let clone = cnt.clone();
+        for (let i = 0; i < w.length; i++) {
+            clone[w[i].charCodeAt() - 'a'.charCodeAt()]--;
+        }
+        // 判断如果
+        if (clone.every((item) => item <= 0)) {
+            if (res === '' || res.length > w.length) {
+                res = w;
+            }
+        }
+    }
+    return res;
+};
+
+// 辅助函数 模拟java的clone();
+Array.prototype.clone = function () {
+    var cloneArr = [];
+    var i = this.length;
+    while (i--) {
+        cloneArr[i] = this[i];
+    }
+    return cloneArr;
+}
+
+
+
+// 方法三：API 寻找补全词数组 按长度排序后返回最短的
+var shortestCompletingWord = function (licensePlate, words) {
+    // 处理字符串，字母转小写
+    licensePlate = licensePlate.toLowerCase();
+    // 建立数组，对应licensePlate字母Unicode码。
+    const cnt = [];
+    for (const c of licensePlate) {
+        if (c.charCodeAt() >= 97 && c.charCodeAt() <= 122) {
+            cnt.push(c.charCodeAt() - 'a'.charCodeAt());
+        }
+    }
+
+    // 寻找补全词数组
+    let WordCompletions = words.filter(word => {
+        const map = new Array(26).fill(0);
+        for (let i = 0; i < word.length; i++) {
+            map[word[i].charCodeAt() - 'a'.charCodeAt()]++;
+        }
+        for (const code of cnt) {
+            // map[code]--;
+            if (--map[code] < 0) return false; // licensePlate中含有word没有的字母 word一定不是不全词返回false
+        }
+        return true;
+    })
+
+    // 将补全词数组按照长度生序排序，返回最短补全词
+    return WordCompletions.sort((a, b) => a.length - b.length)[0]
+};
+
 
 console.log(shortestCompletingWord('abf', ['fa', 'fed', 'anrf', 'afeb', 'abfc']));
