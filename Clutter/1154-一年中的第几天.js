@@ -56,12 +56,12 @@ var dayOfYear = function (date) {
 };
 
 
-// 方法二：
+// 方法二：直接计算
 // 使用一个长度为 12 的数组，预先记录每一个月的天数，再进行累加，随后我们将答案再加上 day，
 var dayOfYear = function (date) {
     date = date.split('-');
     const [y, m, d] = date
-    const amount = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    const amount = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; // 索引0代表1月 2代表2月。。。。
     // 判断平年还是闰年 如果是闰年2月要加1天
     if (!(y % 400) || !(y % 4) && y % 100) amount[1]++;
     // 计算
