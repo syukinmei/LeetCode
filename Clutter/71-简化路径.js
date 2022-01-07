@@ -27,10 +27,27 @@
  * @param {string} path
  * @return {string}
  */
+// 方法一：栈
+// 思路：
+// 用 / 将路径分割为路径数组，创建一个栈，遍历路径数组。
+// 路径数组的有可能为 '' 、 '.' 、 '..' 、 'pathnamexxx'。
+// 如果是遇到 '' 、 '.'，一个没有任何含义，一个表示当前目录本身，我们无需切换目录，则直接跳过。
+// 如果是'..'，则查看栈是否有值，若有值，因为是返回上一目录需要出栈，若无值，表示已经是根目录操作无效。
+// 其他情况就是目录名称 'pathnamexxx' 需要入栈。
+// 最后得到目录名称组合的数组，用 / 拼接字符串，首部添加 / 表示根目录后返回。
 var simplifyPath = function (path) {
-
+    const pathArr = path.split('/');
+    const stack = [];
+    for (const pathName of pathArr) {
+        if (pathName === '' || pathName === '.') {
+            continue;
+        } else if (pathName === '..') {
+            if (stack.length !== 0) stack.pop();
+        } else {
+            stack.push(pathName);
+        }
+    }
+    return '/' + stack.join('/');
 };
-
-console.log(simplifyPath("/home/"))
-console.log(simplifyPath("/../"))
-console.log(simplifyPath("/home//foo/"))
+// 时间复杂度：O(n)，n为字符串 path 的长度。
+// 空间复杂度：O(n)，n为数组 pathArr 的长度，我们需要存储pathArr中的所有字符串
