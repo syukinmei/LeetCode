@@ -23,3 +23,25 @@
 
 // 输入：s = "1"
 // 输出：0
+
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+// 方法一：用一个计数器模拟栈（遍历）
+// 这道题保证了括号一定是匹配的，且我们也不需要关心栈中具体的内容；只是需要了解括号嵌套的最大深度（栈的大小）；所以我们用一个变量就可以搞定。
+var maxDepth = function (s) {
+    let size = 0, max = 0;
+    for (let i = 0; i < s.length; i++) {
+        if (s[i] === '(') {
+            size++;
+            max = Math.max(max, size);
+        } else if (s[i] === ')') {
+            size--;
+        }
+    }
+    return max;
+};
+// 时间复杂度：O(n)，n 为字符串 s 的长度，需要遍历一次字符串。
+// 空间复杂度：O(1)，只需要常数的空间存放若干变量。
