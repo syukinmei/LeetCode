@@ -37,8 +37,10 @@ var sectionEapYearCount = function (beginYear, endYear) {
     const end400 = endYear / 400;
     const right = end4 - end100 + end400;
 
-    return right - left;
+    return parseInt(right - left);
 }
+console.log(sectionEapYearCount(1971, 2019))
+console.log(Math.floor((2019 - 1969) / 4))
 
 
 /**
@@ -47,8 +49,17 @@ var sectionEapYearCount = function (beginYear, endYear) {
  * @param {number} year
  * @return {string}
  */
+
+// 思路：
+// 1970.12.31是星期四，先计算当前日期距离1970.12.31的总天数。
+// 每7天一循环，（总天数+3）%7，就是当前日期的周几了。
+// 例如，输入是 1999年3月21日 ，即可分为三部分分别计算后求和：
+// -（1） 1971年1月1日 到 1998年12月31日 之间的所有天数；
+// -（2） 1999年1月1日 到 1999年2月28日 之间的所有天数；
+// -（3） 1999年3月1日 到 1999年3月21日 之间的所有天数；（直接+day）
+// （1）和（2）需要考虑闰年的影响。
 var dayOfTheWeek = function (day, month, year) {
-    // 计算输入日距1971年1月1日（星期5）的天数来推导
+    // 计算输入日距1970年12月31日（星期4）的天数来推导
     let days = 0;
     const week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30];
