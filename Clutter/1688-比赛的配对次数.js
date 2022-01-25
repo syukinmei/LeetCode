@@ -25,17 +25,29 @@
  * @param {number} n
  * @return {number}
  */
+// 方法一：模拟
 var numberOfMatches = function (n) {
     let teams = n;
-    let ans = 0;
-    while (teams > 1) {
+    let ans = 0; // 记录比赛中配对的场次
+    while (teams > 1) { // 只剩下一个队伍 及决出了冠军队伍 结束循环
         if (teams % 2 === 0) { // 队伍数量为 偶数 可以两两配对
-            ans += teams / 2;
-            teams /= 2;
+            ans += teams / 2; // 进行 n / 2 场比赛
+            teams /= 2; // n / 2 支队伍进入下一轮
         } else { // 队伍数量为 奇数 不能两两配对
-            ans += (teams - 1) / 2;
-            teams = (teams - 1) / 2 + 1;
+            ans += (teams - 1) / 2; // 进行 (n - 1) / 2 场比赛
+            teams = (teams - 1) / 2 + 1; // (n - 1) / 2 + 1 支队伍进入下一轮
         }
     }
     return ans;
 };
+// 时间复杂度：O(log n)。每一轮后会有一半（向下取整）数量的队伍无法晋级，因此轮数为O(log n)。每一轮需要O(1)的时间进行计算。
+// 空间复杂度：O(1)。只需要常数的空间存放若干变量。
+
+
+// 方法二：数学
+// 每场比赛淘汰一支，由于最后只决出一个获胜队伍，因此就有 n−1 个无法晋级的队伍，也就是会有 n−1 场比赛。
+var numberOfMatches = function (n) {
+    return n - 1;
+};
+// 时间复杂度：O(1)
+// 空间复杂度：O(1)
