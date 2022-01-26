@@ -46,6 +46,8 @@ var totalMoney = function (n) {
     dayMoney = dayNumber * (firstDayMoney + lastDayMoney) / 2; // 剩下不能构成一个完整周的天数里存的钱
     // dayMoney = dayNumber * firstDayMoney + dayNumber * (dayNumber - 1) * 1 / 2;
     return dayMoney + weekMoney;
+
+    // return ((49 + weekNumber * 7) * weekNumber + (weekNumber * 2 + dayNumber + 1) * dayNumber) >> 1;
 }
 // 时间复杂度：O(1)，只需要用到常数时间。
 // 空间复杂度：O(1)，只需要常数的空间存放若干变量。
