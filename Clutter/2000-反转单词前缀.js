@@ -19,3 +19,43 @@
 // 解释："z" 不存在于 word 中。
 // 无需执行反转操作，结果字符串是 "abcd" 。
 
+
+/**
+ * @param {string} word
+ * @param {character} ch
+ * @return {string}
+ */
+// 方法一：API大法
+var reversePrefix = function (word, ch) {
+    let iFlip = word.indexOf(ch);
+
+    let flip = word.slice(0, iFlip + 1).split('').reverse().join('');
+
+    let res = flip + word.slice(iFlip + 1);
+
+    return res;
+};
+
+
+// 方法二：双指针模拟
+ var reversePrefix = function (word, ch) {
+    let iFlip = word.indexOf(ch); // 获取ch第一次出现的下标
+    if (iFlip !== -1) { // 说明 word 中存在 ch
+        // 利用双指针进行反转
+        let left = 0, right = iFlip;
+        const wordArr = [...word]; // 字符串转数组用于反转
+        while (left < right) {
+            let temp = wordArr[left];
+            wordArr[left] = wordArr[right];
+            wordArr[right] = temp;
+            // [wordArr[left], wordArr[right]] = [wordArr[right], wordArr[left]];
+            left++;
+            right--;
+        }
+        // 数组转字符串用于返回
+        word = wordArr.join('');
+    }
+    return word;
+};
+// 时间复杂度：O(n)，n为字符串 word 的长度。查找和反转都需要O(n)。
+// 空间复杂度：O(n)，取决于编程语言，对于字符串不可变的语言，空间空间复杂度为O(n)，否则为O(1)。
