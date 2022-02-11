@@ -15,6 +15,7 @@
  */
 var uncommonFromSentences = function (s1, s2) {
     const freq = new Map(); // 记录 s1 s2 中单词及出现的频率
+
     const ArrS1 = s1.split(' ');
     for (let word of ArrS1) {
         freq.set(word, freq.has(word) ? freq.get(word) + 1 : 1);
@@ -24,9 +25,13 @@ var uncommonFromSentences = function (s1, s2) {
     for (let word of ArrS2) {
         freq.set(word, freq.has(word) ? freq.get(word) + 1 : 1);
     }
+
+    // 判断哪些单词只出现了一次 将其加入结果集中
     const resArr = new Array();
-    for (let word of freq) {
-        if (word[1] === 1) resArr.push(word[0]);
+    for (let [word, count] of freq) {
+        if (count === 1) resArr.push(word);
     }
     return resArr;
 };
+// 时间复杂度：O(n+m)，n 和 m ，分别为 s1 和 s2 的长度。
+// 空间复杂度：O(n+m)，n 和 m ，分别为 s1 和 s2 的长度。
