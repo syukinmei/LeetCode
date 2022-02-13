@@ -62,3 +62,9 @@ var longestDiverseString = function (a, b, c) {
 };
 // 时间复杂度：O( (a+b+c) * ClogC )。a、b、c为给定的整数，C表示字母的种类，本题中C = 3。每次从待选的字母中选择一个字母需要执行一次排序，时间复杂度为O(ClogC)，最多需要选择 a+b+c 个字母。
 // 空间复杂度：O(C)，在本题中C = 3。需要O(C)的空间存储 字母 及其 当前数量。
+
+
+// 使用数量最多的字符拼接字符串，但如果拼接之后不是快乐字符串就用第二多的字符来拼接
+var longestDiverseString = function (a, b, c) {
+
+}
