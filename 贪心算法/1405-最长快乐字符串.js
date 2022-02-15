@@ -66,5 +66,14 @@ var longestDiverseString = function (a, b, c) {
 
 // 使用数量最多的字符拼接字符串，但如果拼接之后不是快乐字符串就用第二多的字符来拼接
 var longestDiverseString = function (a, b, c) {
-
-}
+    let res = ''; // 存放构建的快乐字符串
+    const arr = [[a, 'a'], [b, 'b'], [c, 'c']]; // 用于记录 字母 及其 数量
+    while (true) {
+        arr.sort((a, b) => b[0] - a[0]); // 对可用字符数量进行排序，根据字母数量 降序 排序
+        // chIdx表示使用arr中的那个字母，如果快乐字符串 res 最后两个字母和数量最多字母相同 则使用次最多的字母 否则使用最多字母
+        const chIdx = res.slice(-2) === arr[0][1].repeat(2) ? 1 : 0;
+        if (arr[chIdx][0] === 0) return res; // 判断要使用的字母数量够不够，使用完了直接返回 快乐字符串 此时即位最长
+        res += arr[chIdx][1]; // 更新快乐字符串
+        arr[chIdx][0]--; // 该字母被使用 对应数量减1
+    }
+};
