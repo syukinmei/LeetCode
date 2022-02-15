@@ -31,10 +31,55 @@
  * @param {string} sentence
  * @return {number}
  */
+// 方法一：遍历模拟
+// 由题意得，不满足条件的 token 为以下其中之一：
+//  - 单词中有数字
+//  - 单词中有两个连字符 '-‘
+//  - 连字符在单词开头或者尾部 '-'
+//  - 连字符的左/右字符不是小写字母
+//  - 单词中的标点符号不在单词的尾部
 var countValidWords = function (sentence) {
-
+    const wordsArr = sentence.split(' ');
+    let res = 0;
+    for (let token of wordsArr) {
+        if (isValid(token)) res++;
+    }
+    return res;
 };
+// 辅助函数 判断该 token 是否有效
+const isValid = (token) => {
+    if (token === '') return false;
+    const n = token.length;
+    let hasHyphens = false; // 表示连字符是否出现过
+    for (let i = 0; i < n; i++) {
+        const ch = token.at(i);
+        if (!isNaN(parseInt(ch))) return false; // 如果单词中包含数字则无效
 
+        if (ch === '-') {
+            // 判断是否 出现过连字符 或者 连字符出现在 token 开头或尾部
+            // 判断连字符左右是否是小写字母
+            // 满足其一则无效
+            if (hasHyphens === true || i === 0 || i === n - 1 || !isLetter(token.at(i - 1)) || !isLetter(token.at(i + 1))) {
+                return false;
+            }
+            hasHyphens = true; // 更新 hasHyphens 表示出现过
+        }
+
+        // 遇到标点符号判断是否是 token 的尾部 ，不是则无效
+        if (ch === '!' || ch === '.' || ch === ',') {
+            if (i !== n - 1) return false;
+        }
+    }
+    // 到达这里没有被return出去则说明该 token 有效
+    return true;
+}
+// 辅助函数 判断是否是小写字母
+const isLetter = (ch) => {
+    if (ch >= 'a' && ch <= 'z') return true;
+    return false;
+}
+// 时间复杂度：O(n)，n 为字符串 sentence 的长度。切分整个句子，并且处理单词需要O(n)。
+// 空间复杂度：O(1)。只需要常数的空间存放若干变量。
 
 
 // 方法二：正则
