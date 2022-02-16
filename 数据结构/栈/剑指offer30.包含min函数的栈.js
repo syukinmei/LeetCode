@@ -68,3 +68,24 @@ class MinStack {
 // push()：stack 正常入栈，minStack遇到小于等于 min() 元素时入栈
 // pop()：先 检测辅助栈 top() === min() stack ，minStack出栈
 //        再 stackA 正常出栈。
+
+
+// 方法三：API大法
+class MinStack {
+    constructor() {
+        this.stack = [];
+    }
+    push(item) {
+        this.stack.push(item);
+    }
+    top() {
+        return this.stack[this.stack.length - 1];
+    }
+    min() {
+        // return Math.min(...this.stack);
+        return Math.min.apply(null, this.stack);
+    }
+    pop() {
+        this.stack.pop();
+    }
+}
