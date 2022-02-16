@@ -47,3 +47,5 @@ var findMinFibonacciNumbers = function (k) {
     }
     return ans;
 };
+// 时间复杂度：O(logk)，k 为给定的整数。需要找到所有不超过 k 的斐波那契数字，然后计算和为 k 的最少斐波那契数字数目，不超过 k 的斐波那契数字的个数是O(logk)个
+// 空间复杂度：O(logk)，k 为给定的整数。需要 O(logk)的空间存储所有不超过 k 的斐波那契数字。
