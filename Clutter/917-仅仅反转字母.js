@@ -22,7 +22,8 @@
  * @param {string} s
  * @return {string}
  */
- var reverseOnlyLetters = function (s) {
+// 思路：我们使用 left 和 right 指针分别从左边右边扫描字符串 s。如果两个指针都扫描到字母，且 left < right ，那么交换 s[left] 和 s[right]，然后继续进行扫描；否则表明反转过程结束，返回处理后的字符串。
+var reverseOnlyLetters = function (s) {
     const sArr = s.split('');
     let left = 0, right = s.length - 1;
     while (left < right) {
@@ -34,3 +35,5 @@
     }
     return sArr.join('');
 };
+// 时间复杂度：O(n)，n 为字符串 s 的长度
+// 空间复杂度：O(n)。
