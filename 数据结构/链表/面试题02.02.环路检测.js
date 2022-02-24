@@ -47,7 +47,7 @@ var detectCycle = function (head) {
         visited.add(head);
         head = head.next;
     }
-    return head;
+    return null;
 };
 // 时间复杂度：O(n)，n 为链表的节点数目。我们需要访问链表的每一个节点。
 // 空间复杂度：O(n)，n 为链表的节点数目。我们需要将链表中的每一个节点都保存到集合中。
