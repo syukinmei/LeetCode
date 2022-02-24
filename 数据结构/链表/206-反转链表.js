@@ -39,8 +39,21 @@ var reverseList = function (head) {
     }
     return prev;
 };
-// 时间复杂度：O(n)，n 为链表的长度。需要遍历一次链表。
+// 时间复杂度：O(n)，n 为链表的节点数目。需要遍历一次链表。
 // 空间复杂度：O(1)，只需要常数的空间存放若干变量。
 
 
 // 方法二：递归反转链表
+// 思路：用递归函数不断传入 head.next ，直到 head === null 或者 head.next === null ，到了递归的最后一层的时候，让后面一个节点指向前一个节点，然后让前一个节点的 next 置为空，直到到达第一层，就是链表的第一个节点，每一层都返回最后一个节点。
+var reverseList = function (head) {
+    if (head === null || head.next === null) {
+        return head;
+    }
+    const newHead = reverseList(head.next);
+    // 此时的 head 为4 最后一个节点指向前一个节点。
+    head.next.next = head;
+    head.next = null; // 前一个节点的 next 置为空。
+    return newHead;
+};
+// 时间复杂度：O(n)，n 为链表的节点数目。需要对链表的每一个节点进行反转操作。
+// 空间复杂度：O(n)，n 为链表的节点数目。递归的深度为 n。
