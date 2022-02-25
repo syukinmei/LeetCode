@@ -75,3 +75,19 @@ var preorderTraversal = function (root) {
 // 时间复杂度：O(n)，n 为二叉树的节点，每一个节点只被遍历一次。
 // 空间复杂度：O(n)，为迭代过程中显示栈道开销，平均情况为O(logn)，最坏情况为树呈链状，为O(n)。
 
+// 迭代的标准写法
+var preorderTraversal = function (root) {
+    if (root === null) return [];
+    // 用于存储遍历的结果
+    const res = [];
+    // 用于存储未遍历的右子树
+    const stack = [root];
+    // 迭代二叉树 栈中有值
+    while (stack.length !== 0) {
+        root = stack.pop();
+        res.push(root.val); // 记录根节点
+        if (root.right !== null) stack.push(root.right);
+        if (root.left !== null) stack.push(root.left);
+    }
+    return res;
+};
