@@ -24,7 +24,7 @@ var complexNumberMultiply = function (num1, num2) {
     // 获取复数的实部和虚部
     const [a, b] = [parseInt(num1.split('+')[0]), parseInt(num1.split('+')[1].split('i')[0])];
     const [c, d] = [parseInt(num2.split('+')[0]), parseInt(num2.split('+')[1].split('i')[0])];
-    // 公式：(a+bi)(c+di)=(ac-bd)+(bc+ad)i
+    // 复数乘法法则：(a+bi)(c+di)=(ac-bd)+(bc+ad)i
     const res = '' + a * c - b * d + '+' + (b * c + a * d) + 'i';
     return res;
 };
