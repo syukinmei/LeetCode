@@ -32,7 +32,7 @@
  * @param {TreeNode} root
  * @return {boolean}
  */
-// 方法一：递归中序遍历链表，将二叉搜索树转变成一个数组，判断结点数组是否是单调递增的，是返回true。
+// 方法一：递归中序遍历二叉树，将二叉搜索树转变成一个数组，判断结点数组是否是单调递增的，是返回true。
 var isValidBST = function (root) {
     const arr = [];
     // 递归函数
@@ -70,3 +70,24 @@ const helper = function (root, lower, upper) {
 // 时间复杂度：O(n)，n 为二叉树的结点数目，在递归调用过程中每一个节点只被遍历一次。
 // 空间复杂度：O(n)，n 为二叉树的深度，递归函数需要栈空间，栈空间取决于递归的深度。
 
+// 方法三：中序遍历
+// 二叉搜索树「中序遍历」得到的值构成的序列一定是升序的，这启示我们在中序遍历的时候实时检查当前节点的值是否大于前一个中序遍历到的节点的值即可
+var isValidBST = function (root) {
+    const stack = [];
+    // 声明一个变量，记录当前操作结点，用于与下次获取的节点进行对比
+    let prev = -Infinity;
+    while (root !== null || stack.length !== 0) {
+        while (root !== null) {
+            stack.push(root);
+            root = root.left;
+        }
+        root = stack.pop();
+        // 如果中序遍历得到的节点的值小于等于前一个 prev，说明不是二叉搜索树，返回false
+        if (root.val <= prev) return false;
+        prev = root.val; // 存储当前结点的值作为下一个节点的比较对象
+        root = root.right;
+    }
+    return true;
+};
+// 时间复杂度：O(n)，n 为二叉树的节点，每一个节点只被遍历一次。
+// 空间复杂度：O(n)，n 为二叉树的节点，栈栈最多存储 n 个节点。
