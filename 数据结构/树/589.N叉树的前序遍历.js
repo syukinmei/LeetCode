@@ -49,21 +49,25 @@ var preorder = function (root) {
     helper(root);
     return res;
 };
-// 时间复杂度：O(n)，n 为 N叉树的节点，每一个节点只被遍历一次。
+// 时间复杂度：O(n)，n 为 N叉树的节点，每一个节点只被访问一次。
 // 空间复杂度：O(n)，为递归过程中栈道开销，平均情况为O(logn)，最坏情况为树呈现链状，为O(n)。
 
 // 方法二：迭代
+// 思路：利用栈先进后出的原理，依次从右向左将子节点入栈，这样出栈的时候即可保证从左向右依次遍历每个子树
 var preorder = function (root) {
     if (root === null) return [];
     const res = [];
     const stack = [];
     stack.push(root);
     while (stack.length !== 0) {
-        root = stack.pop(); // 栈底元素作为根节点 记录并遍历子树
+        root = stack.pop(); // 栈顶元素作为根节点 记录并遍历子树
         res.push(root.val); // 记录节点
+        // 把所有子树从右向左逆序压入栈中，将后续需要访问的节点压入栈中
         for (let i = root.children.length - 1; i >= 0; i--) {
             stack.push(root.children[i]);
         }
     }
     return res;
 };
+// 时间复杂度：O(n)，n 为N叉树的节点，每一个节点只被访问一次。
+// 空间复杂度：O(n)，为迭代过程中显示栈的开销，平均情况为O(logn)，最坏情况为树呈链状，为O(n)。
