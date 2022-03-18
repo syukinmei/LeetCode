@@ -29,4 +29,5 @@
     }
     return res;
 };
-// 
+// 时间复杂度：O(nlogn)，n 为数组 words 的长度。排序需要O(nlogn)的时间。
+// 空间复杂度：O(n)，n 为 Set集合的长度。
