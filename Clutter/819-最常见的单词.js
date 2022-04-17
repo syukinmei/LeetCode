@@ -19,6 +19,9 @@
  * @return {string}
  */
 // 方法一：哈希表 + 计数
+// 为了判断给定段落的单词是否在禁用单词列表中，使用哈希合集存储禁用单词列表的单词。
+// 遍历 paragraph 得到段落中所有的单词，并且使用哈希表对每个单词计数，同时维护一个 maxFrequency 表示出现次数最多的单词的次数
+// 遍历计数哈希表，根据 maxFrequency 寻找对应单词。
 var mostCommonWord = function (paragraph, banned) {
     // 生成禁用集
     const bannedSet = new Set();
@@ -40,6 +43,7 @@ var mostCommonWord = function (paragraph, banned) {
             sb = '';
         }
     }
+    // 寻找出现次数最多的单词
     for (let [word, frequency] of map.entries()) {
         if (frequency === maxFrequency) return word;
     }
@@ -49,5 +53,5 @@ var mostCommonWord = function (paragraph, banned) {
 const isLeeter = function (ch) {
     return (ch.charCodeAt() >= 97 && ch.charCodeAt() <= 122) || (ch.charCodeAt() >= 65 && ch.charCodeAt() <= 90);
 }
-// 时间复杂度：O(n+m)，n 为 段落 paragraph 的长度，m 为 禁用单词列表 banned 的长度。遍历
-// 空间复杂度：
+// 时间复杂度：O(n+m)，n 为 段落 paragraph 的长度，m 为 禁用单词列表 banned 的长度。遍历禁用单词列表一次将禁用单词存入哈希集合需要O(m)的时间，遍历段落得到每一个非禁用单词的计数需要O(n)的时间，遍历哈希表得到最常见的单词需要O(n)的时间。
+// 空间复杂度：O(n+m)，n 为 段落 paragraph 的长度，m 为 禁用单词列表 banned 的长度。存储禁用单词的哈希集合需要O(m)的空间，记录每个单词的计数的哈希表需要O(n)的空间。
