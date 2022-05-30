@@ -35,7 +35,12 @@ var sumRootToLeaf = function (root) {
         if (root === null) return;
         val = (val << 1) + root.val;
         // val = val * 2 + root.val;
-        if (root.left === null && root.right === null) sum += val;
+        // 到达叶子节点，则进行求和计算。
+        if (root.left === null && root.right === null) {
+            sum += val;
+            return;
+        }
+        // 没到达叶子节点，左右子树继续便利。
         dfs(root.left, val);
         dfs(root.right, val);
     }
