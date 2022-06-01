@@ -35,6 +35,7 @@ var peakIndexInMountainArray = function (arr) {
 // 空间复杂度：O(1)，只需要常数的空间存放若干变量。
 
 // 方法二：二分查找
+// 使用二分查找 求最小满足 arr[i] > arr[i+1] 的下标i。
 var peakIndexInMountainArray = function (arr) {
     const Len = arr.length;
     let left = 1, right = Len - 2;
