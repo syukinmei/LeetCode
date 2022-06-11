@@ -63,6 +63,7 @@ var findTheDistanceValue = function (arr1, arr2, d) {
 
 // 方法二：二分查找
 // 方法一中，我们枚举了arr2中每一项查看是否满足 |v1 - v2| > d ，实际上我们只需要找到arr2中 大于等于v1的第一个v2 以及 小于v1的第一个v2，查看它们两是否满足距离值即可。
+// 可以理解为：在arr2中找与arr[i]最相近的数，如果连最相近的数绝对值差都大于d，那么其他就更不用考虑了。
 // 使用二分查找，搜索arr2中第一个大于等于 v1 的下标 P。此时只需判断 P以及p-1 和 v1 的关系即可。
 // 注意：P可能不在arr2中！！！
 var findTheDistanceValue = function (arr1, arr2, d) {
