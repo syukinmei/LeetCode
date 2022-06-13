@@ -24,6 +24,12 @@
 // 预期：[1,2,3,4,5]
 // 所有下标的对应学生高度都匹配。
 
+// tips：
+// 1 <= heights.length <= 100
+// 1 <= heights[i] <= 100
+
+
+// 题意：对比排序后和排序前位置不一样的个数
 
 /**
  * @param {number[]} heights
@@ -45,3 +51,28 @@ var heightChecker = function (heights) {
 // 时间复杂度：O(nlogn)，n 为数组 heights 的长度，即为排序所需的时间。
 // 空间复杂度：O(n)，即为数组 expected 所需的空间。
 
+
+
+// 方法二：计数排序
+// 注意到本题中学生的高度小于等于 100，因此可以使用计数排序。
+// 因为并不要求我们真正的进行排序，因为不需要确确实实的知道每个位置上排列的是谁，只需要统计下每个数的个数，然后依次判断就可以了
+// 如 heights = [1, 1, 4, 2, 1, 3] ，则 cnt = [0, 3, 1, 1, 1]。 cnt[i] 表示 i 有 cnt[i] 个。通过cnt 就能推导出 expected应该为[1, 1, 1, 2, 3, 4]
+// 在进行计数排序时，我们可以直接使用一个长度为 101 的数组，也可以使用 heights 数组最大元素 max 长度的数组。
+var heightChecker = function (heights) {
+    const max = Math.max(...heights);
+    const cnt = new Array(max + 1).fill(0);
+
+    for (let h of heights) {
+        cnt[h]++;
+    }
+
+    let count = 0;
+    for (let i = 1, j = 0; i < max + 1; i++) {
+        while (cnt[i]-- > 0) {
+            if (heights[j++] !== i) count++;
+        }
+    }
+    return count;
+};
+// 时间复杂度：O(n+C)，n 为数组 heights 的长度，C 是数组 heights  中的最大值 max。即为计数排序所需的时间。
+// 空间复杂度：O(C)，即为计数排序所需的空间。
