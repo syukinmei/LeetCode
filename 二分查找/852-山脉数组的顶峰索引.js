@@ -18,6 +18,12 @@
 // 输入：arr = [3,4,5,1]
 // 输出：2
 
+// 提示：
+// 3 <= arr.length <= 104
+// 0 <= arr[i] <= 106
+// 题目数据保证 arr 是一个山脉数组
+
+
 /**
  * @param {number[]} arr
  * @return {number}
@@ -38,7 +44,7 @@ var peakIndexInMountainArray = function (arr) {
 // 使用二分查找 求最小满足 arr[i] > arr[i+1] 的下标i。
 var peakIndexInMountainArray = function (arr) {
     const Len = arr.length;
-    let left = 1, right = Len - 2;
+    let left = 1, right = Len - 2; // （题意得：数组最小长度为3，山脉型并有山顶）山顶不可能是第一个数，也不会是最后一个数，所以在区间 [1, arr.length-2] 中寻找。
     while (left < right) {
         const mid = left + ((right - left) >> 1);
         if (arr[mid] < arr[mid + 1]) {
