@@ -16,6 +16,9 @@
  * @param {number} n
  * @return {string}
  */
+// 方法一：分类讨论
+// 当 n 为奇数时，返回 n 个 'a' 组成的字符串
+// 当 n 为偶数时，返回 n-1 个 'a' 和一个 'b' 组成的字符串。
 var generateTheString = function (n) {
     if (n % 2 === 0) return 'a'.repeat(n - 1) + 'b';
     return 'a'.repeat(n);
