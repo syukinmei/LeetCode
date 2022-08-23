@@ -75,3 +75,28 @@ var binarySearch = function (timeArr, target, needEqual) {
 }
 // 时间复杂度：O(nlogn)，n 为学生数组(startTime或endTime)的长度。排序需要的时间为O(nlogn)，二分查找的时间复杂度为O(logn)。
 // 空间复杂度：O(logn)，即为排序需要的栈空间。
+
+
+// 差分数组
+// 利用差分数组的思想。对差分数组求前缀和，可以统计出 t 时刻正在做作业的人数。
+// 初始化的差分数组 cnt 每一个元素都为0。
+var busyStudent = function (startTime, endTime, queryTime) {
+    const maxEndTime = Math.max(...endTime);
+    if (queryTime > maxEndTime) return 0;
+    // 初始化差分数组
+    const cnt = new Array(maxEndTime + 2).fill(0);
+    // 构建差分数组
+    for (let i = 0; i < startTime.length; i++) {
+        cnt[startTime[i]]++;
+        cnt[endTime[i] + 1]--;
+    }
+    console.log(cnt)
+    // 差分数组前缀和求 queryTime 时正在学习的学生
+    let count = 0;
+    for (let i = 0; i <= queryTime; i++) {
+        count += cnt[i];
+    }
+    return count;
+};
+// 时间复杂度：O(n+queryTime)，n 为学生数组(startTime或endTime)的长度。queryTime 为给定的查找时间。首先需要遍历一遍数组，需要的时间为O(n)，然后需要差分求和求出 queryTime 时间点正在做作业的学生总数，需要的时间为O(queryTime)，因此总的时间为O(n+queryTime)。
+// 空间复杂度：O(max(endTime))。即为差分数组的长度。
