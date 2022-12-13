@@ -30,3 +30,23 @@ var checkIfPangram = function (sentence) {
 };
 // 时间复杂度：O(n+C)，n 为字符串 sentence 的长度，C 为字符集（词频表）的大小，本题词频表只包含26个小写英文字母，所以 C 为26，整个过程需要遍历一次 sentence 和 Map_freq。
 // 空间复杂度：O(C)，C 为字符集（词频表）的大小，本题词频表只包含26个小写英文字母，所以 C 为26。
+
+
+// 方法二：位运算
+// 本题我们只需知道每个字母是否出现过，而不需要知道其出现次数，所以我们可以使用 一个长度为 26 的二进制数字来表示字符集合即可。
+// 二进制数的第 i 位表示第 i 个字母是否出现过。最后判断这个数字在二进制表示中是否有26个1，即判断该数字是否等于 2^26 - 1。 
+// 具体的：
+// 初始化一个整型变量 exist 为 0，遍历 sentence 中的每个字母 c，如果 c 是字母表中的第 i(0<=i<=26) 个字母，就将 exist 的二进制表示中的第 i 位赋值为 1。这个过程中，将 exist 与 2^i 做或运算，2^i 可以用左移运算实现 1<<i 。
+// 最后，我们只需要判断 exist 是否等于 2^26 - 1即可，如果是表面这数的二进制表示中第 0～25 位都为 1，其余为0，返回true，否则返回false。
+var checkIfPangram = function (sentence) {
+    let exist = 0;
+    for (let i = 0; i < sentence.length; i++) {
+        const idx = sentence[i].charCodeAt() - 'a'.charCodeAt();
+        // exist |= 2 ** idx;
+        exist |= 1 << idx;
+    }
+    // return exist === 2 ** 26 - 1;
+    return exist === (1 << 26) - 1;
+};
+// 时间复杂度：O(n)，n 为字符串 sentence 的长度，我们需要对其遍历一次。
+// 空间复杂度：O(1)，只需要常数的空间存放若干变量。
