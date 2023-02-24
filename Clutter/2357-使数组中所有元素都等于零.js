@@ -20,7 +20,25 @@
  * @param {number[]} nums
  * @return {number}
  */
-// 方法一：哈希集合
+// 方法一：排序+贪心
+// 贪心策略，每次选择数组中最小非零元素作为x，将数组中的每个非零元素减少x。
+var minimumOperations = function (nums) {
+    nums.sort((a, b) => a - b); // 升序排序
+    let subtractor = 0; // 减数，记录当前数组已经减少了多少数
+    let count = 0; // 记录当前操作次数
+    for (let i = 0; i < nums.length; i++) {
+        if (nums[i] > subtractor) {
+            subtractor += nums[i] - subtractor; // 更新减数
+            count++; // 更新操作次数
+        }
+    }
+    return count;
+};
+// 时间复杂度：O(nlogn)，n 为数组 nums 的长度。排序需要O(nlogn)的时间。排序后需要遍历一次数组，对于每个非零元素，计算将该值减到0所需的减数 subtractor，因此总的时间复杂度为O(nlogn)。
+// 空间复杂度：O(logn)，n 为数组 nums 的长度。排序需要O(logn)的递归调用栈空间。
+
+
+// 方法二：哈希集合
 // 由于每次操作都使数组中所有非零元素减少一个相同的值，因此数组中相同元素减少到0点操作数相等，数组中不相等的元素减少到0点操作数不相等。
 // 由因为使用贪心策略操作时，每次操作都会将数组中的最小非零元素减少到0，因此最少操作数等于数组中的不同非零元素个数。
 // 具体地：
