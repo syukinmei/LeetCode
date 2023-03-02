@@ -24,7 +24,7 @@
  * @param {number} num
  * @return {string}
  */
-// 
+// 由于这道题要求二进制表示的长度最多为 32 位，否则返回 "ERROR"，因此不需要判断给定实数的二进制表示的结果是有限小数还是无限循环小数，而是在小数部分变成 0 或者二进制表示的长度超过 32 位时结束操作。当操作结束时，如果二进制表示的长度不超过 32 位则返回二进制表示，否则返回 "ERROR"。
 var printBin = function (num) {
   let ans = "0.";
   while (ans.length <= 32 && num !== 0) {
