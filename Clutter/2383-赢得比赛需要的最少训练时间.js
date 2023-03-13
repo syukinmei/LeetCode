@@ -45,6 +45,9 @@ var minNumberOfHours = function (
 // 我们可以先在初始时，把精力直接补充到足够击败n个对手，因此初始训练小时数为 Math.max(0, sum - initialEnergy + 1)。
 // 接下来我们只需要考虑经验的问题，遍历每个对手，若当前经验不足超过对手，则将经验补到刚好能超过该对手，击败对手后把对手的经验值加到自己身上。
 // 遍历结束，返回训练的小时数。
+// Q：为什么可以这样
+// A：因为精力是每次比赛后，都需要减少的，那么我们需要保证比赛前我们的精力要大于所有对手的精力之和。
+//    对于经验是每次比赛后，都会增加的，所以要遍历 experience 来处理，如果当前遇到的对手经验比我大，则需要比赛前就将当前经验增加到比对手高 1。
 var minNumberOfHours = function (
   initialEnergy,
   initialExperience,
@@ -66,8 +69,8 @@ var minNumberOfHours = function (
       trainingHours += ex - initialExperience + 1;
       initialExperience = ex + 1; // 击败对手需要 ex+1 经验。
     }
-    // 击败对手获得 ex 经验
-    initialExperience += ex;
+    // 每次比赛完都增加经验
+    initialExperience += ex; // 击败对手获得 ex 经验。
   }
 
   return trainingHours; // 返回训练的时长。
