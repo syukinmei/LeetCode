@@ -49,3 +49,29 @@ var unequalTriplets = function (nums) {
 };
 // 时间复杂度：O(nlogn)，n 为数组 nums 的长度，主要为排序所需的时间。
 // 空间复杂度：O(logn)，排序需要 O(logn) 的递归调用栈空间。
+
+// 方法三：哈希表
+// 类似于方案2，我们使用哈希表 cntMap 记录每个元素的数目，key 为元素，value 为元素的个数。
+// 遍历哈希表，记录当前遍历的元素数目 curCnt，先前遍历的元素总数为 preCnt，那么以当前遍历的元素为中间元素的符合条件的三元组的数目为：
+//   preCnt * curCnt * (n - curCnt - preCnt)
+// 随后和方案2一样，对所有元素累计他们的贡献值
+var unequalTriplets = function (nums) {
+  // 创建一个哈希表，用于存储每个数字出现的次数
+  const cntMap = new Map();
+  for (let num of nums) {
+    cntMap.set(num, (cntMap.get(num) ?? 0) + 1);
+  }
+
+  let count = 0;
+  let preCnt = 0;
+  const n = nums.length;
+  // 遍历哈希表，计算每个元素为中间元素的符合条件的三元组数量，并累加到计数器中。
+  for (let curCnt of cntMap.values()) {
+    count += preCnt * curCnt * (n - preCnt - curCnt);
+
+    preCnt += curCnt; // 更新 preCnt
+  }
+  return count;
+};
+// 时间复杂度：O(n)，n 为数组 nums 的长度，需要对其进行一次遍历用于构建哈希表。
+// 空间复杂度：O(n)，构建哈希表所需的空间消耗。
