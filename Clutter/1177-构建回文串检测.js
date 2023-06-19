@@ -56,3 +56,72 @@ var canMakePaliQueries = function (s, queries) {
 };
 // 时间复杂度：O((n+q)*C)，n 为字符串 s 的长度，q 为数组 queries 的长度，C 为字符集的大小，本题中字符均为小写字母，所以 C=26。
 // 空间复杂：O(n*C)，需要创建一个长度为 n * 26 的二维数组，用于存储字母表的词频。
+
+// 优化 1：
+// 对于 preSum 二维数组，我们只关心其每种字母出现次数的奇偶性，不关心其出现次数。所以不需要在前缀和中存储每种字母的出现次数，只需要保存每种字母出现次数的奇偶性。
+// 为了方便计算，约定 0 表示出现偶数次，1 表示出现奇数次。
+// 因为只有奇偶数相加减才能得到奇数。因此，判断待检子串第 j 个小写字母出现次数的奇偶性，只需要判断区间两侧出现次数的奇偶性是否相等，即：
+//  - preSum[right + 1][j] === preSum[left]，则出现偶数次，反之为奇数次。
+var canMakePaliQueries = function (s, queries) {
+  const n = s.length;
+  const preSum = new Array(n + 1).fill(0).map(() => new Array(26).fill(0));
+  for (let i = 0; i < n; i++) {
+    preSum[i + 1] = [...preSum[i]];
+    preSum[i + 1][s.charCodeAt(i) - "a".charCodeAt()] ^= 1; // 利用异或1，奇数变偶数，偶数变奇数
+  }
+  const ans = [];
+  for (const [left, right, k] of queries) {
+    let m = 0; // 待检子串 s[left: right] 中出现奇数次字母个数。
+    for (let j = 0; j < 26; j++) {
+      // 如果待检子串 s[left: right] 的第 j 个小写字母出现奇数次，则记录下来。
+      const isOdd = preSum[right + 1][j] !== preSum[left][j];
+      m += isOdd ? 1 : 0;
+      // m += preSum[right + 1][j] ^ preSum[left][j]; // 利用异或，奇数+1，偶数+0
+    }
+    ans.push(m >> 1 <= k);
+  }
+  return ans;
+};
+// 复杂度同上
+// 时间复杂度：O((n+q)*C)，n 为字符串 s 的长度，q 为数组 queries 的长度，C 为字符集的大小，本题中字符均为小写字母，所以 C=26。
+// 空间复杂：O(n*C)，需要创建一个长度为 n * 26 的二维数组，用于存储字母表的词频。
+
+// 优化 2：
+// 由于长度为26的数组只存储 0 和 1，可以压缩到一个二进制数中。
+// 如二进制 0b10010 表示 b 和 e 出现奇数次，其余字母出现偶数次。
+// 在计算前缀和时（准确地说是异或前缀和）：
+//  - 更新 a 出现次数的奇偶性，可以异或二进制 1；
+//  - ...  b     ...       ，     ...      10；
+//  - ...  c     ...       ，     ...      100；
+//  - 后续字母依此类推。
+
+// 判断待检子串第 j 个小写字母出现次数的奇偶性，只需判断 s[left: right] 中bit为1的个数。
+// 对于前缀和中的两个二进制数直接进行异或运算，得到待检子串中每种字母出现次数的奇偶性。再计算这个二进制数中的 1 的个数，便得到了m。
+// 具体的，使用 n & (n-1) 消除数字 n 的二进制表示中最后一个1，以此判断bit为1的个数。
+//  - Integer.bitCount(preSum[right + 1] ^ preSum[left])
+// 例如，10010 ⊕ 01110 = 11100，说明有3种字母出现了奇数次。
+var canMakePaliQueries = function (s, queries) {
+  const n = s.length;
+  const preSum = new Array(n + 1).fill(0);
+  for (let i = 0; i < n; i++) {
+    const bit = 1 << (s.charCodeAt(i) - "a".charCodeAt()); // 当前的小写字母的二进制位
+    preSum[i + 1] = preSum[i] ^ bit; // 更新其出现次数的奇偶性
+  }
+  const ans = [];
+  for (const [left, right, k] of queries) {
+    const m = bitCount(preSum[right + 1] ^ preSum[left]);
+    ans.push(m >> 1 <= k);
+  }
+  return ans;
+};
+// 辅助函数，统计一个数的二进制位有多少个 1。如 5 的二进制为 101，返回 2。
+function bitCount(n) {
+  let count = 0;
+  while (n) {
+    n &= n - 1;
+    count++;
+  }
+  return count;
+}
+// 时间复杂度：O(n+q)，n 为字符串 s 的长度，q 为数组 queries 的长度。忽略统计位 1 的个数的时间复杂度。
+// 空间复杂度：O(n)，n 为字符串 s 的长度，需要创建长度为 n+1 的数组，用于存储字母表每个单词的奇偶性。
