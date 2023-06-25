@@ -65,3 +65,31 @@ var maxSumDivThree = function (nums) {
 // 由于方法二中我们只需要关注 b 和 c 中最小的两个数，所以我们可以不使用排序，而是在遍历的时候为维护这4个值即可。
 // 时间复杂度：O(n)，n 为数组 nums 的长度。
 // 空间复杂度：O(1)，只需要常数的空间存放若干变量。
+
+// 方法四：动态规划
+// 设 dp[i][j] 为前 i 个数中选若干个数，其模3余为 j 时的和最大值为 dp[i][j]
+// 对于当前数字 nums[i] ，我们不选取它，则 dp[i][j] = dp[i-1][j]
+// 选取它，则有 dp[i][j] = dp[i-1][x] + nums[i]
+// x有：
+//  - x + nums[i]%3 = j
+//  - x = j - nums[i]%3
+//  - 由于 等式右边可能为 负数，所以 x = (j - (nums[i] % 3) + 3) % 3
+var maxSumDivThree = function (nums) {
+  const n = nums.length;
+  const dp = new Array(n + 1)
+    .fill(0)
+    .map(() => new Array(3).fill(Number.MIN_SAFE_INTEGER));
+  dp[0][0] = 0;
+  for (let i = 1; i <= n; i++) {
+    const cur = nums[i - 1];
+    for (let j = 0; j < 3; j++) {
+      dp[i][j] = Math.max(
+        dp[i - 1][j],
+        dp[i - 1][(j - (cur % 3) + 3) % 3] + cur
+      );
+    }
+  }
+  return dp[n][0];
+};
+// 时间复杂度：O(nk)，n 为数组 nums 的长度，此题 k 为 3。状态规划的时间复杂度 = 状态个数 * 单个状态的计算时间。本题中状态个数为 O(nk)，单个状态的计算时间为 O(1)，因此总的时间复杂度为 O(nk)。
+// 空间复杂度：O(nk)，此题 k 为 3，需要 n * k 的空间存放动态规划状态个数。
