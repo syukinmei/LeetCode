@@ -74,6 +74,8 @@ var maxSumDivThree = function (nums) {
 //  - x + nums[i]%3 = j
 //  - x = j - nums[i]%3
 //  - 由于 等式右边可能为 负数，所以 x = (j - (nums[i] % 3) + 3) % 3
+// 状态移动方程为：
+// dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][(j - (nums[i] % 3) + 3) % 3]);
 var maxSumDivThree = function (nums) {
   const n = nums.length;
   const dp = new Array(n + 1)
@@ -93,3 +95,19 @@ var maxSumDivThree = function (nums) {
 };
 // 时间复杂度：O(nk)，n 为数组 nums 的长度，此题 k 为 3。状态规划的时间复杂度 = 状态个数 * 单个状态的计算时间。本题中状态个数为 O(nk)，单个状态的计算时间为 O(1)，因此总的时间复杂度为 O(nk)。
 // 空间复杂度：O(nk)，此题 k 为 3，需要 n * k 的空间存放动态规划状态个数。
+
+// 方法四优化：滚动数组 优化空间复杂度
+// 由于 dp[i]只依赖于dp[i-1]，之前的数据没有用了。因此我们可以使用滚动数组的方式优化空间复杂度。将二维数组优化为一维数组。
+var maxSumDivThree1 = function (nums) {
+  // i 为 0时，一个数字都不选，其和为0，模3余0，余数为1 和 2 的都不存在，设置为负无穷。
+  const dp = [0, Number.MIN_SAFE_INTEGER, Number.MIN_SAFE_INTEGER];
+  for (x of nums) {
+    const preDp = [...dp]; // 拷贝一份上一个状态
+    for (let j = 0; j < 3; j++) {
+      dp[j] = Math.max(preDp[j], preDp[(j - (x % 3) + 3) % 3] + x);
+    }
+  }
+  return dp[0];
+};
+// 时间复杂度：O(nk)，同方法四。
+// 空间复杂度：O(k)，此题 k 为 3，需要创建一个长度为 3 的数组存放动态规划状态。
