@@ -29,17 +29,20 @@ var addStrings = function (num1, num2) {
   let p2 = num2.length - 1; // 指针 p2 指向 num2 的最后一位
   let carry = 0; // 进位
   let ans = ""; // 存储结果的字符串
-  while (p1 >= 0 || p2 >= 0 || carry !== 0) {
+  while (p1 >= 0 || p2 >= 0) {
     // 获取 nums1、nums2 当前位的数字，如果指针超出范围则为 0。
     const digit1 = p1 >= 0 ? num1.charAt(p1) - "0" : 0;
     const digit2 = p2 >= 0 ? num2.charAt(p2) - "0" : 0;
     const sum = digit1 + digit2 + carry; // 当前位的数字相加，并加上进位。
-    ans = (sum % 10) + ans; // 讲当前位的数字加入到结果字符串的开头
+    ans = (sum % 10) + ans; // 将当前位的数字加入到结果字符串的开头
     carry = (sum / 10) | 0; // 计算新的进位，除10向下取整，去除 n 的最低位
     // 移动指针到前一位
     p1--;
     p2--;
   }
+
+  if (carry) ans = 1 + ans; // 如果还有进位，高位补 1。
+
   return ans; // 返回结果字符串
 };
 // 时间复杂度：O(max(n, m))，n 和 m 分别为 nums1、nums2 的长度，竖式加法的次数取决于较大数的位数。
