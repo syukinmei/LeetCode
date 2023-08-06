@@ -57,3 +57,24 @@ var mergeTwoLists = function (list1, list2) {
 };
 // 时间复杂度：O(m+n)，m 和 n 分别为链表 list1、list2 的长度。需要遍历两个链表的每一个节点。
 // 空间复杂度：O(1)，只需要常数的空间存放若干变量。
+
+// 方法二：递归
+// 递归边界：如果其中一个链表为空，直接返回另一个链表作为合并后的结果。
+// 递归内容：如果两个链表都不为空，则比较两个链表当前节点的值，并选择较小的节点的 next 与剩下节点 merge。
+//  - 例如 list1 的节点值更小，那么将 list1 的下一个节点和 list2 合并，即调用 mergeTwoLists(lsit1.next, list2) ，将递归返回的链表接在 list1 的末尾。
+var mergeTwoLists = function (list1, list2) {
+  // 设置递归出口
+  if (list1 === null) return list2;
+  if (list2 === null) return list1;
+
+  // 递归调用，较小节点的 next 指向「其余结点的合并结点」，并返回合并后的链表。
+  if (list1.val < list2.val) {
+    list1.next = mergeTwoLists(list1.next, list2);
+    return list1;
+  } else {
+    list2.next = mergeTwoLists(list1, list2.next);
+    return list2;
+  }
+};
+// 时间复杂度：O(m+n)，m 和 n 分别为链表 list1、list2 的长度。需要访问两个链表的每一个节点。
+// 空间复杂度：O(m+n)，m 和 n 分别为链表 list1、list2 的长度。递归调用栈的深度为n + m。
