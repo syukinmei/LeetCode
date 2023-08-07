@@ -53,7 +53,7 @@ var swapPairs = function (head) {
     node1.next = node2.next;
     node2.next = node1;
 
-    cur = node1; // 更新链表 dummy 的末尾指针。
+    cur = node1; // 更新cur，然后继续交换 cur 后的两个节点。
   }
-  return dummy.next;
+  return dummy.next; // 返回新链表的头节点
 };
