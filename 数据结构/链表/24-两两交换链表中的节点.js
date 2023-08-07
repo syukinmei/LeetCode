@@ -57,3 +57,24 @@ var swapPairs = function (head) {
   }
   return dummy.next; // 返回新链表的头节点
 };
+// 时间复杂度：O(n)，n 为链表的节点数量。需要对每个节点进行更新指针的操作。
+// 空间复杂度：O(1)，只需要常数的空间存放若干变量。
+
+// 方法二：递归
+// 递归边界：当前无节点或者只有一个节点，无需进行交换。
+// 递归内容：设每次需要交换的两个节点为 head 和 next，将 head 和后面完成交换的子链表链接，next 和 head 链接，已完成本轮交换，即：
+//  - head.next = swapPairs(next.next)
+//  - next.net = head
+// 返回值：完成交换的子链表的头节点
+var swapPairs = function (head) {
+  // 设置递归出口
+  if (head === null || head.next === null) return head;
+
+  const next = head.next;
+  head.next = swapPairs(next.next); // head 和后面完成交换的子节点连接
+  next.next = head; // next 和 head 链接。
+
+  return next; // 返回完成交换的子链表的头节点
+};
+// O(n)，n 为链表的节点数量。需要对每个节点进行更新指针的操作。
+// O(n)，n 为链表的节点数量。递归调用栈的深度为 n。
