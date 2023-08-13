@@ -21,6 +21,7 @@
 // 方法一：三指针
 // 如果从左往右地把 nums2 合并到 nums1 中，假设 nums2[0] < nums1[0] ，那么我们需要用 nums2[0] 覆盖掉 nums1[0] ，这不是我们期望的。
 // 因此我们可以尝试 从右往左地把 nums2 合并到 nums1 中。
+// 这样做，我们把 nums1 中的数字移到了另一个空位，有产生一个新的空位，所以剩余的空位个数是不变的，我们总是将空位让给 nums2 中的数字填入，不会发生错误的覆盖，这是如下算法正确的前提。
 // 具体的：
 // 定义三个指针 p1、p2、p，分别指向未排序的 nums1、nums2 的尾部元素和合并后的数组的末尾。
 // 不断比较 nums1[p1] 和 nums2[p2] 的大小，将较大元素放入到 nums1[p] 位置。并不断更新 p1、p2、p 三个指针，直到 p2 < 0，即 nums2 所有元素都插入到了 nums1 中。
@@ -35,16 +36,20 @@ var merge = function (nums1, m, nums2, n) {
   let p1 = m - 1;
   let p2 = n - 1;
   let p = nums1.length - 1;
+  // nums2 还有需要合并的元素
   while (p2 >= 0) {
-    if (nums1[p1] >= nums2[p2]) {
+    if (p1 >= 0 && nums1[p1] >= nums2[p2]) {
+      // 将 nums1[p1] 放入合并后的数组的尾部
       [nums1[p1], nums1[p]] = [nums1[p], nums1[p1]];
       p1--;
     } else {
+      // 将 nums2[p2] 放入合并后的数组的尾部
       [nums2[p2], nums1[p]] = [nums1[p], nums2[p2]];
       p2--;
     }
     p--;
   }
+  // 返回合并后的有序数组 nums1
   return nums1;
 };
 // 时间复杂度：O(n+m)， 需要遍历 nums1 和 nums2 将其升序的插入到 nums1 中。
