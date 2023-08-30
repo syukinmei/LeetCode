@@ -69,3 +69,25 @@ var goodNodes = function (root) {
 };
 // 时间复杂度：O(n)，n 为二叉树的节点数，我们需要遍历每一个节点，对每一个节点进行常数时间的操作。
 // 空间复杂度：O(n)，n 为二叉树的高度，为递归过程中栈的开销。平均情况为O(logn)，最坏情况为树呈现链状，为O(n)。
+
+// 方法二：递归
+// 将 goodNodes(root, maxVal) 定义为从当前节点 root 开始搜索的好节点个数，其中 maxVal 表示从根节点到当前节点到路径上（不包括当前节点）的最大值。
+
+// 递归边界：当前节点 root 为空，直接返回 0。
+// 递归内容：
+//  - 递归左子树 goodNodes(root.left, Math.max(maxVal, root.val)) ，获取左子树的好节点个数 left
+//  - 递归右子树 goodNodes(root.right, Math.max(maxVal, root.val)) ，获取右子树的好节点个数 right
+//  - 返回以当前节点为 root 开始搜索的好节点个数，即 maxVal <= root.val ，那么返回 left + right + 1。否则返回 left + right。
+var goodNodes = function (root, maxVal = -Infinity) {
+    // 递归出口
+    if (root === null) return 0;
+
+    // 递归获取左子树和右子树的节点个数
+    const left = goodNodes(root.left, Math.max(maxVal, root.val));
+    const right = goodNodes(root.right, Math.max(maxVal, root.val));
+
+    // 返回以当前节点开始搜索的好节点个数。
+    return left + right + (maxVal <= root.val);
+};
+// 时间复杂度：O(n)，n 为二叉树的节点数，我们需要遍历每一个节点，对每一个节点进行常数时间的操作。
+// 空间复杂度：O(n)，n 为二叉树的高度，为递归过程中栈的开销。平均情况为O(logn)，最坏情况为树呈现链状，为O(n)。
