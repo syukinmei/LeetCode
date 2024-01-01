@@ -6,6 +6,11 @@
 
 // 返回最大化利润所需执行的 最小轮转次数 。 如果不存在利润为正的方案，则返回 -1 。
 
+//     【0】                 【0】                  【4】                  【4】
+// 【0】    【0】        【0】    【4】          【0】    【4】          【4】    【3】
+//     【0】                 【0】                  【0】                  【0】
+// 0 Shifts Done        1 Shifts Done          2 Shifts Done          3 Shifts Done
+
 // 输入：customers = [8,3], boardingCost = 5, runningCost = 6
 // 输出：3
 // 解释：座舱上标注的数字是该座舱的当前游客数。
@@ -40,6 +45,11 @@
 
 // 方法一：模拟
 // 模拟摩天轮的轮转过程，每次轮转时，累加等待的游客以及新到达的游客，然后最多接待 4 个，更新等待的游客数量和利润，记录最大的利润和对应的轮转次数。
+// 具体的：
+//   1、使用一个循环来模拟每次轮转的情况，遍历每次轮转的客户数量。
+//   2、每次轮转最多接待 4 位客户，计算当前轮转的利润，并扣除运行成本。
+//   3、更新最大利润和对应的轮转次数。
+//   4、遍历完所有的轮转后，如果最大利润大于 0，则返回最优的轮转次数；否则，返回 -1。
 /**
  * @param {number[]} customers
  * @param {number} boardingCost
@@ -49,17 +59,17 @@
 var minOperationsMaxProfit = function (customers, boardingCost, runningCost) {
     const n = customers.length;
 
-    let totalCustomers = 0; // 当前到达却未上摩天轮的客户数量
+    let totalCustomers = 0; // 当前到达却未上摩天轮的游客数量
     let maxProfit = 0; // 当前最大利润
     let maxProfitIndex = -1; // 最大利润对应的轮转次数
     let totalProfit = 0; // 记录当前轮转的总利润
     // 开始模拟轮转，终止条件为客人全部登上摩天轮。
     for (let i = 0; i < n || totalCustomers > 0; i++) {
         if (i < n) {
-            // 来了一批新客户
+            // 来了一批新游客，等待的游客以及新到达的游客。
             totalCustomers += customers[i];
         }
-        // 每次轮转最多接待 4 位客户
+        // 每次轮转最多接待 4 位游客
         const currentCustomers = Math.min(4, totalCustomers);
         totalCustomers -= currentCustomers;
 
