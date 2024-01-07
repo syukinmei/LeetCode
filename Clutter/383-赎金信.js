@@ -75,15 +75,16 @@ var canConstruct = function (ransomNote, magazine) {
     if (ransomNote.length > magazine.length) return false;
 
     // 建立计数数组
-    // 下标1为a ，2为b，。。。，26为z，值为出现的次数
+    // 下标0为a ，1为b，。。。，25为z，值为出现的次数。
     const cnt = new Array(26).fill(0);
     for (const c of magazine) {
         cnt[c.charCodeAt() - 'a'.charCodeAt()]++;
     }
 
+    // 消耗字母
     for (const c of ransomNote) {
-        cnt[c.charCodeAt() - 'a'.charCodeAt()]--;
-        if (cnt[c.charCodeAt() - 'a'.charCodeAt()] < 0) return false;
+        // 不够则说明无法构建返回false
+        if (--cnt[c.charCodeAt() - 'a'.charCodeAt()] < 0) return false;
     }
     return true
 }
