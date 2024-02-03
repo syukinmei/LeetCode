@@ -12,7 +12,6 @@
 //  - 如果 Bob 赢，返回 -1 。
 //  - 如果游戏平局，返回 0 。
 
-
 // 输入：aliceValues = [1,3], bobValues = [2,1]
 // 输出：1
 // 解释：
@@ -49,3 +48,44 @@
 // 具体的：
 // 只需要将两个数组 aliceValue 和 bobValue 对应的元素相加后升序排序，然后让 Alice 和 Bob 依次选取，最后计算两人的分数和后进行比较返回结果即可。
 
+/**
+ * @param {number[]} aliceValues
+ * @param {number[]} bobValues
+ * @return {number}
+ */
+var stoneGameVI = function (aliceValues, bobValues) {
+    // step1：计算石头价值和并升序排序
+    const n = aliceValues.length;
+
+    // valusSumAndIndex[i] 存储第 i 个石头的价值和其索引
+    const valusSumAndIndex = new Array(n)
+        .fill(0)
+        .map(() => new Array(2).fill(0));
+
+    for (let i = 0; i < n; i++) {
+        valusSumAndIndex[i] = [aliceValues[i] + bobValues[i], i];
+    }
+
+    valusSumAndIndex.sort((a, b) => b[0] - a[0]); // 根据价值降排序
+
+    // step2：依次获取石头的价值。
+    let scoreA = 0; // Alice 的分数
+    let scoreB = 0; // Bob 的分数
+    // 根据价值依次获取得分
+    for (let i = 0; i < n; i++) {
+        const stoneIndex = valusSumAndIndex[i][1];
+        // Alice 先手，获取偶数下标
+        if ((i & 1) === 0) {
+            scoreA += aliceValues[stoneIndex];
+        } else {
+            scoreB += bobValues[stoneIndex];
+        }
+    }
+
+    // step3：比较结果
+    if (scoreA === scoreB) return 0;
+    else if (scoreA > scoreB) return 1;
+    else if (scoreA < scoreB) return -1;
+};
+// 时间复杂度：O(nlogn)，需要进行一次排序，排序需要 O(nlogn)。
+// 空间复杂度：O(n)，为额外数组 valusSumAndIndex 的空间开销。
