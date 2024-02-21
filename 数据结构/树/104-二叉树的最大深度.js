@@ -25,14 +25,28 @@
  * @param {TreeNode} root
  * @return {number}
  */
-// 方法一：DFS
+// 方法一：递归 DFS
+// 对于任意节点的最大深度 = max(其左子树的最大深度, 其右子树的最大深度) + 1
+// 因此，可以通过递归遍历每个节点，不断计算左右子树的最大深度，最终返回整个二叉树的最大深度。
+
+// 递归函数的含义：
+// 计算以当前节点为根的子树的最大深度
+// 递归边界：
+// 当前节点为空，空节点的深度为 0，直接返回 0
+// 递归内容：
+// 计算当前节点左右子树的最大深度。
+// 递归返回值：
+// 以当前节点为根的子树的最大深度，即为左右子树深度的较大值加1。
 var maxDepth = function (root) {
     if (root === null) return 0; // 递归设置出口
-    return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+    // 计算左子树的最大深度
+    const leftDepth = maxDepth(root.left);
+    // 计算右子树的最大深度
+    const rightDepth = maxDepth(root.right);
+    return 1 + Math.max(leftDepth, rightDepth);
 };
 // 时间复杂度：O(n)，n 为二叉树的结点数目，每一个节点只被遍历一次。
 // 空间复杂度：O(n)，n 为二叉树的深度，递归函数需要栈空间，栈空间取决于递归的深度。
-
 
 // 方法二：BFS
 // 时间复杂度：O(n)，n 为二叉树的结点数目，每一个结点入队出队各一次。
