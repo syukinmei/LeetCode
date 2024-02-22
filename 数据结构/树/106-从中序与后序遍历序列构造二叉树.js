@@ -59,7 +59,15 @@
 
 // 具体的：
 // 因为要需要根据后序遍历的序列找到根节点，并快速定位到其在中序遍历的序列中找到其位置，以进行切分左右子树。我们使用「哈希表」indexMap 记录中序遍历序列中节点值对应的下标。
-// 。。。
+// 对于根据根节点进行分割后的左右子树，我们需要确定其中序遍历序列区间和后序遍历序列区间，即其左右边界。
+//  - 对于中序遍历序列的区间，我们使用两个位置进行标记 [inStart, inEnd]。inStart 是起始位置，inEnd 是结束位置
+//  - 对于中序遍历序列的区间，我们使用两个位置进行标记 [postStart, postEnd]。postStart 是起始位置，postEnd 是结束位置
+// 由于，我们找到根节点后，需要进行下一轮构建，即需要确认下一轮左右子树在中序遍历序列和后序遍历序列中的位置。
+//  - 左子树（中序遍历）：[inStart, rootIndex-1]
+//  - 左子树（后序遍历）：[postStart, postStart+rootIndex-inStart-1]
+//  - 右子树（中序遍历）：[rootIndex+1, inEnd]
+//  - 右子树（后序遍历）：[postStart+rootIndex-inStart, postEnd-1]
+// 然后根据这个序列区间进行递归构建即可。
 var buildTree = function (inorder, postorder) {
     const n = inorder.length;
 
