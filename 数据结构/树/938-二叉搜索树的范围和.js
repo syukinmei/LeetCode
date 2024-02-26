@@ -71,3 +71,41 @@ var rangeSumBST = function (root, low, high) {
 };
 // 时间复杂度：O(n)，n 为二叉搜索树的节点数目，最坏情况下树退化成链表，每一个节点均被访问一次。
 // 空间复杂度：O(n)，，n 为二叉树搜索的深度，递归函数需要栈空间，栈空间取决于递归的深度。
+
+// 方法二：bfs
+// 使用广度优先搜索的方法，用一个队列 queue 存储需要计算的节点。每次取出队首节点时，若节点为空则跳过该节点，否则按方法一中给出的大小关系来决定加入队列的子节点。
+var rangeSumBST = function (root, low, high) {
+    let sum = 0; // 存放二叉树搜索树的范围和的求和结果
+
+    if (root === null) return 0; // 判断树为空的情况
+
+    // 声明队列，用于存储下一层需要遍历的节点
+    const queue = [root];
+
+    // 广度优先搜索（BFS）遍历树节点
+    while (queue.length !== 0) {
+        // 将遍历过的节点出队
+        const curNode = queue.shift();
+
+        // 如果当前节点为空，则跳过，进行下一次迭代
+        if (curNode === null) continue;
+
+        // 根据节点值与范围的关系，将子节点加入队列或更新求和结果
+        if (curNode.val > high) {
+            // 右子树所有节点都大于 high，不存在范围节点，只需要左子树加入队列
+            queue.push(curNode.left);
+        } else if (curNode.val < low) {
+            // 左子树所有节点都小于 low，不存在范围节点，只需要右子树加入队列
+            queue.push(curNode.right);
+        } else {
+            // 当前节点符合要求，将其累加到求和结果 sum 中。并且左右子树都有可能存在范围节点，左右子树都加入队列。
+            sum += curNode.val;
+            queue.push(curNode.left);
+            queue.push(curNode.right);
+        }
+    }
+
+    return sum;
+};
+// 时间复杂度：O(n)，n 为二叉搜索树的节点数目，最坏情况下树退化成链表，每一个节点均被访问一次。
+// 空间复杂度：O(n)，n 为二叉树搜索的宽度，用于存储队列的空间，在最坏情况下，队列中同时存储了树中同一层的所有节点，即为树的最大宽度。
