@@ -36,6 +36,15 @@
 //   - 否则：将栈 inStack 中全部元素转移至栈 outStack 中，以实现元素倒序，并返回 outStack 的栈顶元素。
 // 3. 弹出队首元素 pop()：和 peek 相似，返回 outStack 的栈顶元素操作改为弹出操作。
 // 4. 队列判断空 empty()：当栈 inStack 和 outStack 都为空时，队列为空。
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * var obj = new MyQueue()
+ * obj.push(x)
+ * var param_2 = obj.pop()
+ * var param_3 = obj.peek()
+ * var param_4 = obj.empty()
+ */
 var MyQueue = function () {
     this.inStack = []; // 入队栈，用于加入队尾元素操作
     this.outStack = []; // 出队栈，用于将元素倒序，从而实现删除队首元素。
@@ -89,12 +98,5 @@ MyQueue.prototype.in2out = function () {
         this.outStack.push(this.inStack.pop());
     }
 };
-
-/**
- * Your MyQueue object will be instantiated and called as such:
- * var obj = new MyQueue()
- * obj.push(x)
- * var param_2 = obj.pop()
- * var param_3 = obj.peek()
- * var param_4 = obj.empty()
- */
+// 时间复杂度：push、empty 的操作为O(1)，pop、peek 操作均摊O(1)，函数在 n 次删除队首元素操作中总共需要完成 n 个元素的倒序，均摊时间复杂度为O(1)。
+// 空间复杂度；O(n)，n 为操作总数，对于 n 次 push 操作，队列中会有 n 个元素的情况，因此空间复杂度为O(n)。
