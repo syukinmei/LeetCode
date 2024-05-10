@@ -51,3 +51,5 @@ var countTestedDevices = function (batteryPercentages) {
     }
     return count;
 };
+// 时间复杂度：O(n^2)，n 为数组 batteryPercentages 的长度。遍历数组时，最差情况需要对每个元素都需要再遍历其之后对元素。
+// 空间复杂度：O(1)，只需要常数的空间存放若干变量。
