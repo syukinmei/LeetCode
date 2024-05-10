@@ -53,3 +53,26 @@ var countTestedDevices = function (batteryPercentages) {
 };
 // 时间复杂度：O(n^2)，n 为数组 batteryPercentages 的长度。遍历数组时，最差情况需要对每个元素都需要再遍历其之后对元素。
 // 空间复杂度：O(1)，只需要常数的空间存放若干变量。
+
+// 方法二：差分数组
+// 在模拟的方法中，我们需要频繁对大于 0 的元素之后对元素进行 -1 操作，这很容易让我们联想到差分数组。因为差分数组的应用场景就是 「频繁对原始数组的某个区间的元素进行增减」。
+// 只是这道题比较特殊，因为它的修改区间是到最后一个数。
+// 具体的：
+// 我们使用一个变量 count 表示当前元素被减了多少次。
+// 遍历设备电池容量数组 batteryPercentages，如果当前设备的电池容量大于 0，则将 count+=1 ，即后面的元素都需要 -count 了。
+// 最后返回 count，因为每次遇到 battery > count 都把 count+1 ，这正是题目要求统计的。
+
+// 或者这样想更简单：使用 count 表示当前已测设备的数量，遍历设备数组，如果当前设备的电池容量大于已测设备的数量（battery > count），则将已测设备加 1。最后返回已测设备数量 count 。
+var countTestedDevices = function (batteryPercentages) {
+    let count = 0; // 初始化计数器为 0。
+
+    // 遍历设备电池容量数组
+    for (const battery of batteryPercentages) {
+        // 如果当前设备电池电量大于已测试设备数量，则将已测试设备数量加 1。
+        if (battery > count) count++;
+    }
+    // 返回已测设备的数量
+    return count;
+};
+// 时间复杂度：O(n)，n 为数组 batteryPercentages 的长度。只需要遍历一次数组即可。
+// 空间复杂度：O(1)，只需要常数的空间存放若干变量。
