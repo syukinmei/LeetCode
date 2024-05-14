@@ -38,35 +38,35 @@
  * @return {number}
  */
 var minimumRounds = function (tasks) {
-  // step1：使用哈希表统计每个难度级别的任务数量
-  const taskCnt = new Map();
-  for (const task of tasks) {
-    taskCnt.set(task, (taskCnt.get(task) || 0) + 1);
-  }
-
-  // step2：遍历哈希表中每个任务，计算完成所有任务需要的最少轮次
-
-  let rounds = 0; // 完成所有任务需要的最少轮数
-  for (const [task, count] of taskCnt) {
-    // 如果某个难度级别只有 1 个任务，则无法完成
-    if (count === 1) {
-      return -1;
+    // step1：使用哈希表统计每个难度级别的任务数量
+    const taskCnt = new Map();
+    for (const task of tasks) {
+        taskCnt.set(task, (taskCnt.get(task) || 0) + 1);
     }
 
-    // 可以通过 2 和 3 来完成任务，则累计需要的最少轮次
+    // step2：遍历哈希表中每个任务，计算完成所有任务需要的最少轮次
 
-    // 尽可能多地使用3个任务一轮的方式
-    rounds += Math.floor(count / 3);
+    let rounds = 0; // 完成所有任务需要的最少轮数
+    for (const [task, count] of taskCnt) {
+        // 如果某个难度级别只有 1 个任务，则无法完成
+        if (count === 1) {
+            return -1;
+        }
 
-    // 如果有剩余任务，则再增加一轮
-    if (count % 3 !== 0) {
-      rounds += 1;
+        // 可以通过 2 和 3 来完成任务，则累计需要的最少轮次
+
+        // 尽可能多地使用3个任务一轮的方式
+        rounds += Math.floor(count / 3);
+
+        // 如果有剩余任务，则再增加一轮
+        if (count % 3 !== 0) {
+            rounds += 1;
+        }
+
+        // rounds += Math.ceil(count / 3); // 或者直接向上取整
     }
 
-    // rounds += Math.ceil(count / 3); // 或者直接向上取整
-  }
-
-  return rounds;
+    return rounds;
 };
 // 时间复杂度：O(n)，n 为数组 tasks 的长度。需要遍历对其进行遍历以统计任务数量和计算每种任务完成所需的轮次。
 // 空间复杂度：O(n)，n 为数组 tasks 的长度。需要使用哈希表来存储每个难度级别的任务数量，最坏情况下每种任务都不同。
