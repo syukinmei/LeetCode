@@ -28,4 +28,44 @@
 // 如果上式 > k，则说明需要删除的元素多了，那么我们右移 left 指针，直到上式 <= k，此时 right - left + 1 就是元素 x 的复合题意的等值子数组的长度。用其更新答案的最大值。
 // 最后，我们遍历完 posList 中的所有下标列表，即可得到答案。
 
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var longestEqualSubarray = function (nums, k) {
+    // 构建每个元素出现的位置下标数组哈希表
+    // key 为元素值，value 为该元素在 nums 中的下标列表
+    const posList = new Map();
+    for (let i = 0; i < nums.length; i++) {
+        if (!posList.has(nums[i])) {
+            posList.set(nums[i], []);
+        }
+        posList.get(nums[i]).push(i); // 存储下标
+    }
 
+    let maxLen = 0; // 记录满足条件的最长等值子数组的长度
+
+    // 遍历哈希表中的每个元素
+    for (let num of posList.keys()) {
+        // 对于每个元素 num，将其在 nums 中的下标列表使用「滑动窗口」计算元素 num 的最长等值子数组的长度
+        const pos = posList.get(num);
+
+        if (pos.length <= maxLen) continue; // 优化：无法让 maxLen 变得更大，则直接跳过该元素
+
+        let left = 0,
+            right = 0; // 初始化滑动窗口
+        while (right < pos.length) {
+            // 当前窗口需要删除的元素数量为：窗口大小 - 窗口中元素 num 的数量
+            // 如果需要删除的元素数量超过 k，无法生成满足条件的合法等值子数组，收缩窗口，左边界右移
+            while (pos[right] - pos[left] - right + left > k) left++;
+            // 当前窗口可以生成满足条件的合法等值子数组，更新最大长度
+            maxLen = Math.max(maxLen, right - left + 1);
+
+            right++; // 移动右边界
+        }
+    }
+    return maxLen;
+};
+// 时间复杂度：O(n)，n 为数组 nums 的长度。分组构建哈希表需要 O(n) 的复杂度，通过滑动窗口找到每个元素的最大长度的等值子数组长度只需要遍历所有的连续相等字符的长度计数即可。
+// 空间复杂度：O(n)，n 为数组 nums 的长度。需要使用哈希表分组保存每种元素的在 nums 中的下标，哈希表需要 O(n) 的空间存储每个元素的下标。
