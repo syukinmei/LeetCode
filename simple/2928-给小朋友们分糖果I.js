@@ -39,3 +39,30 @@ var distributeCandies = function (n, limit) {
 };
 // 时间复杂度：O(n^2)，n 为 limit，用于枚举三个小朋友分得的糖果数。
 // 空间复杂度：O(1)，只需要常数的空间存放若干变量。
+
+// 方法二：优化枚举
+// 我们从最简单的问题开始思考，x 颗糖果分给 2 个小朋友，有几种分法？
+//  - 如果 x > 2 * limit，至少会有一个小朋友会分得大于 limit 颗糖果，此时不存在合法方案。
+//  - 如果 x <= 2 * limit，对于第二个小朋友，至少需要拿走 max(0, x - limit) 颗糖果，才能保证第二个小朋友分得的糖果数不超过 limit。同时至多能拿到 min(limt, x) 颗糖果。
+// 此时就可以得到有效方案数：min(limt, x) - max(0, x - limit) + 1。
+
+// 因此，我们可以枚举第一个小朋友分得的糖果数 a，然后利用上述推论计算在第一个小朋友分得 a 颗糖果后，剩余 n - a 颗糖果分给 2 个小朋友的合法方案数。
+var distributeCandies = function (n, limit) {
+    let count = 0;
+
+    // 枚举第一个小朋友 a 的糖果数
+    for (let a = 0; a <= Math.min(n, limit); a++) {
+        const x = n - a;
+        if (x > 2 * limit) continue; // 至少有一个小朋友会分得大于 limit 颗糖果。
+
+        // 计算当前情况下可行的分配方式数目，并累加到总计数 count
+        // Math.min(limit, x) 确保分给第二个小朋友的糖果数目不超过 limit
+        // Math.max(0, x - limit) 确保分给第三个小朋友的糖果数目不超过 limit
+        // 这两个函数之间的差值 + 1 是当前情况下可行的分配方式数目
+        count += Math.min(limit, x) - Math.max(0, x - limit) + 1;
+    }
+
+    return count; // 返回总的可行分配方式数目
+};
+// 时间复杂度：O(min(n, limit))，用于枚举第一个小朋友分到的糖果数。
+// 空间复杂度：O(1)，只需要常数的空间存放若干变量。
