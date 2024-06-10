@@ -54,3 +54,6 @@ var numRescueBoats = function (people, limit) {
 };
 // 时间复杂度：O(nlogn)，n 为数组 people 的长度。排序需要O(nlogn)的时间。
 // 空间复杂度：O(logn)，排序需要O(logn)的递归栈空间。
+
+// 思考：
+// 为什么贪心策略是最重匹配最轻的，而不是最重匹配次最重的？
