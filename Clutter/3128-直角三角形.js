@@ -60,7 +60,33 @@
  * @return {number}
  */
 var numberOfRightTriangles = function (grid) {
+    const n = grid.length; // 矩阵行数
+    const m = grid[0].length; // 矩阵列数
+    const rowTotalOnes = new Array(n).fill(0); // 每一行的 1 的个数
+    const colTotalOnes = new Array(m).fill(0); // 每一列的 1 的个数
 
+    // 遍历一次矩阵，统计每一行的 1 的个数和每一列 1 的个数
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < m; j++) {
+            if (grid[i][j] === 1) {
+                rowTotalOnes[i]++; // 统计每一行的 1 的个数
+                colTotalOnes[j]++; // 统计每一列的 1 的个数
+            }
+        }
+    }
+
+    let res = 0; // 可构成的直角三角形的个数
+    //  遍历一次矩阵
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < m; j++) {
+            // 如果当前点为 1 则将其视为直角，计算其他两个点的合法方法数
+            if (grid[i][j] === 1) {
+                res += (rowTotalOnes[i] - 1) * (colTotalOnes[j] - 1); // 套用计算公式
+            }
+        }
+    }
+
+    return res; // 返回可构成的直角三角形的个数
 };
-// 时间复杂度：O(nm)，n 为 grid 的行数，m 为 grid 的列数。需要对矩阵进行 2 次遍历，因此总的时间复杂度为 O(nm)
+// 时间复杂度：O(nm)，n 为 grid 的行数，m 为 grid 的列数。需要对矩阵进行 2 次遍历，因此总的时间复杂度为 O(nm)。
 // 空间复杂度：O(n+m)，n 为 grid 的行数，m 为 grid 的列数。需要额外开辟两个长度为 n 和 m 的数组存储每一行和每一列 1 的个数，因此总的空间复杂度为 O(n+m)。
