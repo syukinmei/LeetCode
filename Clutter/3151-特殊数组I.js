@@ -26,6 +26,9 @@
 //  - 直接等号判断其奇偶性是否相同。
 //  - 按位异或：奇偶性同 0 或同 1为 0，不同为 1。
 
+// 一步到位的方法 (a ^ b) & 1
+//  - 检查 a 和 b 异或结果的最低位是否为 1。这能告诉我们 a 和 b 在最低位（即奇偶性相关的位）是否不同，为 0 意味着最低位上是相同的（即要么都是偶数，要么都是奇数），为 1 意味着它们在最低位上不同（一个奇数，一个偶数）。
+
 /**
  * @param {number[]} nums
  * @return {boolean}
@@ -34,7 +37,8 @@ var isArraySpecial = function (nums) {
     // 遍历一次数组，查看是否有相邻元素奇偶性相同的
     for (let i = 1; i < nums.length; i++) {
         // if (nums[i] % 2 === nums[i - 1] % 2) return false;
-        if (!(nums[i] & 1) ^ (nums[i - 1] & 1)) return false;
+        // if (!(nums[i] & 1) ^ (nums[i - 1] & 1)) return false;
+        if (!((nums[i] ^ nums[i - 1]) & 1)) return false;
     }
     // 相邻元素奇偶性均不同，返回 true
     return true;
