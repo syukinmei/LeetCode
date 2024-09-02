@@ -31,7 +31,7 @@
  * @return {number}
  */
 // 方法一：枚举
-// 遍历所有学生的起始时间喝结束时间，统计符合 startTime[i] <= queryTime <= endTime[i] 条件的学生总数即可。
+// 遍历所有学生的起始时间和结束时间，统计符合 startTime[i] <= queryTime <= endTime[i] 条件的学生总数即可。
 var busyStudent = function (startTime, endTime, queryTime) {
     let count = 0;
     for (let i = 0; i < startTime.length; i++) {
@@ -45,7 +45,7 @@ var busyStudent = function (startTime, endTime, queryTime) {
 
 // 方法二：二分查找
 // 对于每个学生的作业时间 [startTime[i], endTime[i]] ，一定满足 startTime[i] <= endTime[i] 。如果第 i 个学生在 queryTime 时正在作业，则一定满足 startTime[i] <= queryTime <= endTime[i] 。
-// 设 startTime <= queryTime 的学生集合为 lessStart。设 endTime <= queryTime 的学生集合为 lessEnd ，根据以上推论（startTime[i] <= endTime[i]）可知 lessEnd ∈ lessStart。我们从 lessStart 中去除 lessEnd 的子集部分即为符合条件的学生集合。
+// 设 startTime <= queryTime 的学生集合为 lessStart。设 endTime < queryTime 的学生集合为 lessEnd ，根据以上推论（startTime[i] <= endTime[i]）可知 lessEnd ∈ lessStart。我们从 lessStart 中去除 lessEnd 的子集部分即为符合条件的学生集合。
 // 我们通过二分查找找到起始时间小于等于 queryTime 的学生人数，然后减去结束时间小于 queryTime 的学生人数，最终结果即为符合条件的学生人数。
 var busyStudent = function (startTime, endTime, queryTime) {
     startTime.sort((a, b) => a - b);
@@ -79,7 +79,8 @@ var binarySearch = function (timeArr, target, needEqual) {
 
 // 差分数组
 // 利用差分数组的思想。对差分数组求前缀和，可以统计出 t 时刻正在做作业的人数。
-// 初始化的差分数组 cnt 每一个元素都为0。
+// 初始化的差分数组 cnt 每一个元素都为0。在每个学生的开始时间处 cnt[startTime[i]] 加 1，在每个学生的结束时间处 cnt[endTime[i]] 减 1，这样我们就可以通过差分数组的前缀和求出每个时刻正在做作业的学生人数。
+// 而 cnt[0] , cnt[1] , ... , cnt[queryTime] 的和即为 queryTime 时刻正在做作业的学生人数。
 var busyStudent = function (startTime, endTime, queryTime) {
     const maxEndTime = Math.max(...endTime);
     if (queryTime > maxEndTime) return 0;
