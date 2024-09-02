@@ -32,17 +32,21 @@
  * @return {number}
  */
 // 方法一：滑动窗口
+// 我们可以使用滑动窗口的方法计算出连续相同字符的最大长度。
+// 具体的，使用一个辅助函数 f(c) ，计算最多替换 k 个字符 c 的情况下，连续相同字符的最大长度。其中 c 就是题目中的 "T" 或 "F"。
+// 此时我们的答案就是 max(f("T"), f("F")
+// 我们在遍历字符串 answerKey 的时候，如果 k 不足即 k < 0，我们将窗口的左边界向右移动，直到 k >= 0。遍历结束后滑动窗口最大长度即为「将 k 个字符串修改为 char 后最大连续字符的长度」。
 var maxConsecutiveAnswers = function (answerKey, k) {
     return Math.max(maxConsecutiveChar(answerKey, k, 'T'), maxConsecutiveChar(answerKey, k, 'F'));
 };
 
 // 辅助函数
 const maxConsecutiveChar = function (answerKey, k, char) {
-    let res = 0, left = 0, right = 0;
+    let res = 0, left = 0, right = 0; // res 为滑动窗口的最大长度
     while (right < answerKey.length) {
         if (answerKey[right] !== char) {
             k--;
-            // 窗口缩小
+            // 窗口缩小，左边界向右移动，直到 k >= 0
             while (k < 0) {
                 if (answerKey[left] !== char) k++;
                 left++;
@@ -52,6 +56,7 @@ const maxConsecutiveChar = function (answerKey, k, char) {
         res = Math.max(res, right - left + 1);
         right++;
     }
+    // res 即为将 k 个字符串修改为 char 后，连续相同字符的最大长度。
     return res;
 }
 // 时间复杂度：O(n)，n 为字符串 answerKey 的长度，我们只需要遍历字符串两次，分别判断 T 和 K 的情况。
