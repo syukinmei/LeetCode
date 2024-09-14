@@ -48,3 +48,41 @@ var sortedSquares = function (nums) {
 };
 // 时间复杂度：O(n)，n为数组nums的长度。
 // 空间复杂度：O(1)，除了答案数组，我们只需要维护常数的空间保存若干变量。
+
+// 方法二：双指针+不进行多次平方计算
+// 上述写法是：比较左右指针指向的元素的平方值，改为：比较左右指针指向的元素，然后进行平方计算
+// 即，比较 -nums[i] 和 nums[j] 的大小：
+//  - 如果 -nums[i] < nums[j]，那么 res[k--] = nums[j] * nums[j]；
+//  - 如果 -nums[i] >= nums[j]，那么 res[k--] = nums[i] * nums[i]；
+// 其余和方法一保持一直，这种写法每次循环只需要计算一次乘法。
+
+// Q：为什么可以这样做？
+// A：因为数组 nums 中的元素都是非递减的，我们对其关系进行分析：
+//     - 数组 nums 中的元素均为负数，那么 -nums[i] > 0 > nums[j] 恒成立，我们按照（平方后）从大到小依次填入答案
+//     - 数组 nums 中的元素均为非负数，那么 -nums[i] <= 0 < nums[j] 恒成立，我们按照（平方后）从大到小依次填入答案
+//     - 数组 nums 中的元素有正有负，nums[i] < 0 且 nums[j] >=0 ，那么 -nums[i] > nums[j] 等价于 nums[i]^2 > nums[j]^2，反之亦然如此。
+//    本质时平方比较和绝对值比较一样，现在只是利用数组有序的特点，通过比较数组中负数部分的最大值（即 -nums[i]）和正数部分的最大值（nums[j]）来决定填入结果数组的值。
+//    具体来说，-nums[i] 代表数组中最大的负数的绝对值，nums[j] 代表数组中最大的正数绝对值。
+var sortedSquares = function (nums) {
+    // 初始化左右指针、插入指针 k，结果数组 res
+    let left = 0,
+        right = nums.length - 1;
+    const n = nums.length;
+    let k = n - 1;
+    const res = new Array(n);
+
+    // 循环，直到左指针超过右指针，或者 k 指针为 -1，均表示所有数据已填入 res 中
+    while (left <= right) {
+        // 相等的情况谁赋值都一样
+        if (-nums[left] >= nums[right]) {
+            res[k--] = nums[left] * nums[left];
+            left++;
+        } else if (-nums[left] < nums[right]) {
+            res[k--] = nums[right] * nums[right];
+            right--;
+        }
+    }
+    return res;
+};
+// 时间复杂度：O(n)，n为数组nums的长度，只需要对 nums 进行一次变量。
+// 空间复杂度：O(1)，只需要常数的空间存放若干变量。
