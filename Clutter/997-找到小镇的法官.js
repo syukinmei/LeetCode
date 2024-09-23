@@ -32,21 +32,18 @@
 var findJudge = function (n, trust) {
     const inDegrees = new Array(n + 1).fill(0); // inDegrees[i] 表示节点（编号） i 的入度
     const outDegress = new Array(n + 1).fill(0); // outDegress[i] 表示节点（编号） i 的出度
-
     // 遍历边，根据每组信任关系 t[0] -> t[1]，统计每个节点的入度和出度
     for (const t of trust) {
-        inDegrees[t[1] - 1] += 1; // 编号 t[1] 入度增加
-        outDegress[t[0] - 1] += 1; // 编号 t[0] 出度增加
+        outDegress[t[0]] += 1; // 编号 t[0] 出度增加
+        inDegrees[t[1]] += 1; // 编号 t[1] 入度增加
     }
-
     // 遍历所有节点，找到入度为 n-1 且出度为 0 的节点
     // 从下标 1 处开始遍历，因为题目中节点编号从 1 开始
-    for (let i = 1; i < n; i++) {
+    for (let i = 1; i <= n; i++) {
         if (inDegrees[i] === n - 1 && outDegress[i] === 0) {
             return i; // 找到法官
         }
     }
-
     // 法官不存在
     return -1;
 };
