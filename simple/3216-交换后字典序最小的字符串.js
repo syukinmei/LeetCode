@@ -23,3 +23,24 @@
 //  - 遍历结束，没有执行交换，返回原字符串
 
 // 额外的，字符对应的数字的奇偶性，等于字符的 ASCII 值的奇偶性。
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var getSmallestString = function (s) {
+    const sArr = s.split("");
+    for (let i = 0; i < sArr.length - 1; i++) {
+        const x = sArr[i];
+        const y = sArr[i + 1];
+        // 满足交换条件（奇偶性相同），且 左边数字大于右边数字，则交换
+        if ((x.charCodeAt(0) & 1) === (y.charCodeAt(0) & 1) && x > y) {
+            sArr[i] = y;
+            sArr[i + 1] = x;
+            break; // 第一个交换的，就是字典序最小的，直接返回
+        }
+    }
+    return sArr.join(""); // 转字符串后返回
+};
+// 时间复杂度：O(n)，n 为字符串 s 的长度，最多需要对其进行一次遍历。
+// 空间复杂度：O(n)，n 为字符串 s 的长度，需要对其转数字后模拟交换操作。
+
